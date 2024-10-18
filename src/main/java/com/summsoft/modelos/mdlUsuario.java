@@ -7,9 +7,27 @@ public class mdlUsuario {
    private String usuario;
    private String clave;
    private String perfil;
-   private String estado;
+   private String telefono;
+   private String activo;
    private int idTerminal;
 
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
+    }
+   
     public int getId() {
         return id;
     }
@@ -48,14 +66,6 @@ public class mdlUsuario {
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public int getIdTerminal() {

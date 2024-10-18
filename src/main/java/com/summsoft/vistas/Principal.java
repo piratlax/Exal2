@@ -1,6 +1,7 @@
 package com.summsoft.vistas;
 
 import com.summsoft.utilerias.Usuario;
+import com.summsoft.utilerias.Ventana;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -37,7 +38,6 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem2 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         Dashboard = new javax.swing.JDesktopPane();
         status = new javax.swing.JPanel();
@@ -46,8 +46,10 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuSistema = new javax.swing.JMenu();
         mnuSalir = new javax.swing.JMenuItem();
-
-        jMenuItem2.setText("jMenuItem2");
+        jMenu2 = new javax.swing.JMenu();
+        mnuPersonal = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,7 +61,7 @@ public class Principal extends javax.swing.JFrame {
         );
         DashboardLayout.setVerticalGroup(
             DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 646, Short.MAX_VALUE)
+            .addGap(0, 638, Short.MAX_VALUE)
         );
 
         txtFecha.setText("Hoy es {dayname} {day} de {month} de {year}");
@@ -115,6 +117,27 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuSistema);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuDireccion.png"))); // NOI18N
+        jMenu2.setText("Dirección");
+
+        mnuPersonal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuPersonal.png"))); // NOI18N
+        mnuPersonal.setText("Personal");
+        mnuPersonal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuPersonalActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuPersonal);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Autobuses");
+        jMenu1.setActionCommand("Autobuses");
+        jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Terminales");
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -136,6 +159,16 @@ public class Principal extends javax.swing.JFrame {
        System.exit(0);
     }//GEN-LAST:event_mnuSalirActionPerformed
 
+    private void mnuPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPersonalActionPerformed
+       if (!Ventana.isPersonal()){
+            vistaPersonal personal = new vistaPersonal();
+            Dashboard.add(personal);
+            personal.setLocation(100,1);
+            personal.setVisible(true);
+            Ventana.setPersonal(true);
+        }
+    }//GEN-LAST:event_mnuPersonalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -143,9 +176,12 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane Dashboard;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem mnuPersonal;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenu mnuSistema;
     private javax.swing.JPanel status;
