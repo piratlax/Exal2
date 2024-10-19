@@ -6,9 +6,11 @@ com\summsoft\exal\Login$2.class
 com\summsoft\utilerias\Utilidades.class
 com\summsoft\vistas\vistaPersonal$8.class
 com\summsoft\vistas\vistaPersonal$5.class
+com\summsoft\vistas\vistaTipoBus$1.class
 com\summsoft\vistas\vistaPersonal$7.class
 com\summsoft\vistas\Principal.class
 com\summsoft\exal\Login$3.class
+com\summsoft\vistas\vistaTipoBus.class
 com\summsoft\vistas\Principal$1.class
 com\summsoft\modelos\mdlUsuario.class
 com\summsoft\utilerias\Usuario.class
@@ -18,6 +20,7 @@ com\summsoft\vistas\vistaPersonal$2.class
 com\summsoft\vistas\vistaPersonal.class
 com\summsoft\utilerias\Ventana.class
 com\summsoft\vistas\vistaPersonal$4.class
+com\summsoft\vistas\Principal$3.class
 com\summsoft\implementaciones\implUsuario.class
 com\summsoft\vistas\vistaPersonal$6.class
 com\summsoft\vistas\vistaPersonal$1.class

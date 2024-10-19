@@ -49,6 +49,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnuPersonal = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
+        mnuBusEstilo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -105,8 +106,10 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        mnuSistema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuSistema.png"))); // NOI18N
         mnuSistema.setText("Sistema");
 
+        mnuSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuSalir.png"))); // NOI18N
         mnuSalir.setText("Salir");
         mnuSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,8 +134,19 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuAutobuses.png"))); // NOI18N
         jMenu1.setText("Autobuses");
         jMenu1.setActionCommand("Autobuses");
+
+        mnuBusEstilo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuEstilos.png"))); // NOI18N
+        mnuBusEstilo.setText("Tipo y Diseño");
+        mnuBusEstilo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuBusEstiloActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuBusEstilo);
+
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Terminales");
@@ -169,6 +183,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuPersonalActionPerformed
 
+    private void mnuBusEstiloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuBusEstiloActionPerformed
+        if (!Ventana.isBusStyle()){
+            vistaTipoBus tipoBus = new vistaTipoBus();
+            Dashboard.add(tipoBus);
+            tipoBus.setLocation(100,1);
+            tipoBus.setVisible(true);
+            Ventana.setBusStyle(true);
+        }
+    }//GEN-LAST:event_mnuBusEstiloActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -181,6 +205,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem mnuBusEstilo;
     private javax.swing.JMenuItem mnuPersonal;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenu mnuSistema;
