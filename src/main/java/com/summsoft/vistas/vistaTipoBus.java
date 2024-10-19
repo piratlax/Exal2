@@ -2,13 +2,19 @@ package com.summsoft.vistas;
 
 import com.summsoft.implementaciones.ImplTipoBus;
 import com.summsoft.interfases.DaoTipoBus;
+import com.summsoft.modelos.MdlTipoBus;
 import com.summsoft.utilerias.Ventana;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class vistaTipoBus extends javax.swing.JInternalFrame {
 
+    
+    
     public vistaTipoBus() {
         initComponents();
         Inicio();
@@ -26,6 +32,8 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
     txtCol3.setEnabled(false);
     txtCol4.setEnabled(false);
     txtCol5.setEnabled(false);
+    
+    
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,7 +48,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAutobus = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        btnEliminarFila = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -77,23 +85,20 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
 
         tblAutobus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "Col 1", "Col 2", "Col 3", "Col 4", "Col 5"
             }
         ));
         jScrollPane1.setViewportView(tblAutobus);
 
-        jButton4.setText("Eliminar fila");
+        btnEliminarFila.setText("Eliminar fila");
+        btnEliminarFila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarFilaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -102,20 +107,20 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(0, 199, Short.MAX_VALUE)))
+                        .addComponent(btnEliminarFila)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarFila)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
@@ -143,13 +148,13 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Columna 4");
 
-        jcValor1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Conductor", "Sanitario", "Pasillo", " " }));
+        jcValor1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Pasillo", "Sanitario" }));
 
-        jcValor2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Sanitario", "Pasillo", " ", " " }));
+        jcValor2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Pasillo", "Sanitario", " ", " " }));
 
         jcValor3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pasillo", "Asiento", "Sanitario", " " }));
 
-        jcValor4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Sanitario", "Pasillo", " " }));
+        jcValor4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Pasillo", "Sanitario", " " }));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Numeros:");
@@ -184,11 +189,16 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
         jButton7.setText("Quitar");
 
         btnGuardar.setText("Guardar Diseño");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Columna 5");
 
-        jcValor5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Sanitario", "Pasillo", " " }));
+        jcValor5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asiento", "Pasillo", "Sanitario" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -198,39 +208,48 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCol1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jcValor1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCol1, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jcValor1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(txtCol2))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel2)
+                                                .addGap(33, 33, 33))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jcValor2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(txtCol2))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jcValor3, 0, 91, Short.MAX_VALUE)
+                                    .addComponent(txtCol3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jcValor4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtCol4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel7)
                                         .addGap(33, 33, 33))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jcValor2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4)
-                            .addComponent(jcValor3, 0, 91, Short.MAX_VALUE)
-                            .addComponent(txtCol3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jcValor4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCol4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel7))
-                            .addComponent(jLabel5))
-                        .addGap(41, 41, 41))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jcValor5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtCol5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnGuardar))
+                        .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -238,26 +257,21 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnNuevo))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(btnNuevo)
+                                .addGap(2, 2, 2))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(btnIntegrarFila)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jButton5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSalir))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jcValor5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCol5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(btnIntegrarFila)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGuardar)))
-                        .addGap(8, 8, 8))))
+                                .addComponent(btnSalir)))
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,7 +330,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                     .addComponent(jButton5)
                     .addComponent(jButton6)
                     .addComponent(jButton7))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -327,7 +341,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 508, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,19 +368,30 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIntegrarFilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntegrarFilaActionPerformed
-        String Val1=jcValor1.getSelectedItem().toString();
-        String Col1=txtCol1.getText();
+        String Celda1=jcValor1.getSelectedItem().toString();
+        if (Celda1.equals("Asiento"))Celda1=txtCol1.getText();
         
-        String Val2=jcValor2.getSelectedItem().toString();
-        String Col2=txtCol2.getText();
+        String Celda2=jcValor2.getSelectedItem().toString();
+        if (Celda2.equals("Asiento"))Celda2=txtCol2.getText();
         
-        String Val3=jcValor3.getSelectedItem().toString();
-        String Col3=txtCol3.getText();
+        String Celda3=jcValor3.getSelectedItem().toString();
+        if (Celda3.equals("Asiento"))Celda3=txtCol3.getText();
         
-        String Val4=jcValor4.getSelectedItem().toString();
-        String Col4=txtCol4.getText();
+        String Celda4=jcValor4.getSelectedItem().toString();
+        if (Celda4.equals("Asiento"))Celda4=txtCol4.getText();
         
+        String Celda5=jcValor5.getSelectedItem().toString();
+        if (Celda5.equals("Asiento"))Celda5=txtCol5.getText();
         
+        DefaultTableModel model= (DefaultTableModel) tblAutobus.getModel();
+            model.addRow(new Object[]{
+            Celda1, Celda2, Celda3, Celda4, Celda5 });
+        
+            txtCol1.setText("");
+            txtCol2.setText("");
+            txtCol3.setText("");
+            txtCol4.setText("");
+            txtCol5.setText("");
     }//GEN-LAST:event_btnIntegrarFilaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -378,15 +403,33 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
        DaoTipoBus dao = new ImplTipoBus();
        String tipo = txtTipo.getText();
-       
        if (tipo.isBlank()){
            JOptionPane.showMessageDialog(null, "Favor de colocar un nombre", "Advertencia", JOptionPane.WARNING_MESSAGE);
        }else{
            try {
                // Verificamos que el nombre no este repetido
                if (dao.checkBus(txtTipo.getText())) {
-                   JOptionPane.showMessageDialog(null, "El usuario ya existe en la base de datos");
+                   JOptionPane.showMessageDialog(null, "El tipo de autobus ya existe en la base de datos");
                } else {
+                 btnNuevo.setEnabled(false);
+                 txtTipo.setEnabled(false);
+                 
+                jcValor1.setEnabled(true);
+                jcValor2.setEnabled(true);
+                jcValor3.setEnabled(true);
+                jcValor4.setEnabled(true);
+                jcValor5.setEnabled(true);
+
+                txtCol1.setEnabled(true);
+                txtCol2.setEnabled(true);
+                txtCol3.setEnabled(true);
+                txtCol4.setEnabled(true);
+                txtCol5.setEnabled(true);
+                
+                btnIntegrarFila.setEnabled(true);
+                btnGuardar.setEnabled(true);
+
+                
                }
            } catch (Exception ex) {
                System.out.println("error "+ex);
@@ -395,13 +438,69 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
        
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    private void btnEliminarFilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarFilaActionPerformed
+       // Obtener el índice de la fila seleccionada
+    int filaSeleccionada = tblAutobus.getSelectedRow();
+
+    // Verificar si hay una fila seleccionada
+    if (filaSeleccionada != -1) {
+        // Obtener el modelo de la tabla
+        DefaultTableModel model = (DefaultTableModel) tblAutobus.getModel();
+
+        // Eliminar la fila
+        model.removeRow(filaSeleccionada);
+    } else {
+        // Si no se seleccionó ninguna fila, puedes mostrar un mensaje de advertencia
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para eliminar.");
+    }
+    }//GEN-LAST:event_btnEliminarFilaActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+       // Mostrar el cuadro de diálogo con las opciones "Sí" y "No"
+    int respuesta = JOptionPane.showConfirmDialog(this, 
+        "¿Ya tienes todos los asientos integrados?", 
+        "Confirmación", 
+        JOptionPane.YES_NO_OPTION);
+
+    // Verificar la respuesta del usuario
+    if (respuesta == JOptionPane.YES_OPTION) {
+        List<MdlTipoBus> lista=null;
+        lista = new ArrayList<>();
+        
+        int filas = tblAutobus.getRowCount();
+        int cols = tblAutobus.getColumnCount();
+        
+        for (int fila=0; fila<filas; fila++){
+           for (int col=0; col<cols; col++){
+               MdlTipoBus mdl = new MdlTipoBus();
+               Object value = tblAutobus.getValueAt(fila, col);
+               mdl.setTipo(txtTipo.getText());
+               mdl.setValor(value.toString());
+               
+               lista.add(mdl);
+           }
+        }   
+           
+        DaoTipoBus dao = new ImplTipoBus();
+        try {
+            dao.registrar(lista);
+        } catch (Exception ex) {
+            System.out.println("error "+ex);
+        }
+        
+    } else if (respuesta == JOptionPane.NO_OPTION) {
+        // El usuario presionó "No"
+        JOptionPane.showMessageDialog(this, "Continua con tu diseño");
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEliminarFila;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnIntegrarFila;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;

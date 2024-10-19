@@ -2,43 +2,34 @@ package com.summsoft.modelos;
 
 public class MdlTipoBus {
     private int id;
-    private int fila;
     private String tipo;
-    private String col1;
-    private String col2;
-    private String col3;
-    private String col4;
+    private String valor;
 
     public int getId() {
         return id;
     }
 
-    public int getFila() {
-        return fila;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTipo() {
         return tipo;
     }
 
-    public String getCol1() {
-        return col1;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getCol2() {
-        return col2;
+    public String getValor() {
+        return valor;
     }
 
-    public String getCol3() {
-        return col3;
+    public void setValor(String valor) {
+        this.valor = valor;
     }
+    
 
-    public String getCol4() {
-        return col4;
-    }
-
-    public String getCol5() {
-        return col5;
-    }
-    private String col5;
 }
+
+    

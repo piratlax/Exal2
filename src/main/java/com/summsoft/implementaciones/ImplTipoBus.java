@@ -6,37 +6,51 @@ import com.summsoft.utilerias.Conexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ImplTipoBus extends Conexion implements DaoTipoBus{
 
     @Override
-    public boolean registrar(MdlTipoBus mdl) throws Exception {
-   boolean resultado=false;
-       try {
+public boolean registrar(List lista) throws Exception {
+        boolean resultado = false;
+
+        try {
+            // Conectar a la base de datos
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO tipos_bus (tipo, fila, col1, col2, "
-                    + "col3, col4, col5) VALUES (?,?,?,?,?,?,?)");
-            st.setString(1, mdl.getTipo());
-            st.setInt(2, mdl.getFila());
-            st.setString(3, mdl.getCol1());
-            st.setString(4, mdl.getCol2());
-            st.setString(5, mdl.getCol3());
-            st.setString(6, mdl.getCol4());
-            st.setString(7, mdl.getCol5());
-            // Verificar el número de filas afectadas
-            int filasAfectadas = st.executeUpdate();
-            if (filasAfectadas > 0) {
-                resultado = true;
+
+            
+            List<MdlTipoBus> modelos = lista;
+
+            for (MdlTipoBus mdl : modelos) {
+            
+                // Preparar la declaración SQL
+                String sql = "INSERT INTO tipos_bus (tipo, valor) VALUES (?, ?)";
+                PreparedStatement st = this.conexion.prepareStatement(sql);
+                st.setString(1, mdl.getTipo());  // Asegúrate de que getTipo() devuelve un String
+                st.setString(2, mdl.getValor()); // Asegúrate de que getValor() devuelve un String (ajusta el tipo si es necesario)
+
+                // Ejecutar la sentencia SQL para cada objeto
+                int filasAfectadas = st.executeUpdate();
+
+                // Si al menos una fila fue afectada, marcar el resultado como exitoso
+                if (filasAfectadas > 0) {
+                    resultado = true;
+                }
+
+                // Cerrar el PreparedStatement después de usarlo
+                st.close();
             }
-            st.close();
         } catch (SQLException e) {
-            System.out.println("error " + e);
+            System.out.println("Error: " + e.getMessage());
         } finally {
+            // Cerrar la conexión a la base de datos
             this.Cerrar();
         }
-       
-       return resultado; 
-    }
+
+        return resultado;
+    
+}
+
 
     @Override
     public boolean checkBus(String bus) throws Exception {

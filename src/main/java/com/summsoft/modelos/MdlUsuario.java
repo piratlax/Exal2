@@ -1,7 +1,15 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.summsoft.modelos;
 
+/**
+ *
+ * @author Mao
+ */
 public class MdlUsuario {
-
+    
    private int id;
    private String nombre;
    private String usuario;
@@ -75,6 +83,4 @@ public class MdlUsuario {
     public void setIdTerminal(int idTerminal) {
         this.idTerminal = idTerminal;
     }
-   
-    
 }
