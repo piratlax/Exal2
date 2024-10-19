@@ -184,12 +184,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuPersonalActionPerformed
 
     private void mnuBusEstiloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuBusEstiloActionPerformed
-        if (!Ventana.isBusStyle()){
+        if (!Ventana.isTipoBus()){
             vistaTipoBus tipoBus = new vistaTipoBus();
             Dashboard.add(tipoBus);
             tipoBus.setLocation(100,1);
             tipoBus.setVisible(true);
-            Ventana.setBusStyle(true);
+            Ventana.setTipoBus(true);
         }
     }//GEN-LAST:event_mnuBusEstiloActionPerformed
 

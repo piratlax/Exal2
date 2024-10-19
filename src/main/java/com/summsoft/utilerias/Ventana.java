@@ -3,15 +3,16 @@ package com.summsoft.utilerias;
 public class Ventana {
 
 private static boolean Personal;
-private static boolean BusStyle;
+private static boolean TipoBus;
 
-    public static boolean isBusStyle() {
-        return BusStyle;
+    public static boolean isTipoBus() {
+        return TipoBus;
     }
 
-    public static void setBusStyle(boolean BusStyle) {
-        Ventana.BusStyle = BusStyle;
+    public static void setTipoBus(boolean TipoBus) {
+        Ventana.TipoBus = TipoBus;
     }
+
 
     public static boolean isPersonal() {
         return Personal;

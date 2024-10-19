@@ -1,12 +1,12 @@
 package com.summsoft.exal;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
-import com.summsoft.interfases.daoUsuario;
-import com.summsoft.implementaciones.implUsuario;
+import com.summsoft.implementaciones.ImplUsuario;
 import static com.summsoft.utilerias.Utilidades.encryptPassword;
 import com.summsoft.vistas.Principal;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import com.summsoft.interfases.DaoUsuario;
 
 public class Login extends javax.swing.JFrame {
 
@@ -224,7 +224,7 @@ public class Login extends javax.swing.JFrame {
        String Password=encryptPassword(txtPassword.getText());
        
        
-       daoUsuario dao=new implUsuario();
+       DaoUsuario dao=new ImplUsuario();
         try {
             boolean acceso = dao.login(Usuario, Password);
            

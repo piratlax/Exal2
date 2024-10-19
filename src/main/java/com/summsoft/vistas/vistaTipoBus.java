@@ -1,11 +1,32 @@
 package com.summsoft.vistas;
 
+import com.summsoft.implementaciones.ImplTipoBus;
+import com.summsoft.interfases.DaoTipoBus;
+import com.summsoft.utilerias.Ventana;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 public class vistaTipoBus extends javax.swing.JInternalFrame {
 
     public vistaTipoBus() {
         initComponents();
+        Inicio();
     }
 
+    private void Inicio(){
+    jcValor1.setEnabled(false);
+    jcValor2.setEnabled(false);
+    jcValor3.setEnabled(false);
+    jcValor4.setEnabled(false);
+    jcValor5.setEnabled(false);
+    
+    txtCol1.setEnabled(false);
+    txtCol2.setEnabled(false);
+    txtCol3.setEnabled(false);
+    txtCol4.setEnabled(false);
+    txtCol5.setEnabled(false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,13 +59,13 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
         txtCol4 = new javax.swing.JTextField();
         btnIntegrarFila = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        txtTipo = new javax.swing.JTextField();
+        btnNuevo = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jcValor5 = new javax.swing.JComboBox<>();
         txtCol5 = new javax.swing.JTextField();
@@ -142,9 +163,19 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Nombre del tipo de diseño:");
 
-        jButton2.setText("Nuevo");
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Salir");
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Editar");
 
@@ -152,7 +183,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
 
         jButton7.setText("Quitar");
 
-        jButton8.setText("Guardar Diseño");
+        btnGuardar.setText("Guardar Diseño");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Columna 5");
@@ -197,19 +228,17 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                                     .addComponent(jcValor4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCol4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel7)
-                                .addGap(41, 41, 41))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(4, 4, 4))))
+                                .addComponent(jLabel7))
+                            .addComponent(jLabel5))
+                        .addGap(41, 41, 41))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
+                                .addComponent(btnNuevo))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jButton5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -217,7 +246,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3))
+                                .addComponent(btnSalir))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -227,7 +256,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(btnIntegrarFila)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton8)))
+                                .addComponent(btnGuardar)))
                         .addGap(8, 8, 8))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -236,8 +265,8 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -276,14 +305,14 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                             .addComponent(txtCol5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCol4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGuardar)
                     .addComponent(btnIntegrarFila))
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
+                    .addComponent(btnSalir)
                     .addComponent(jButton5)
                     .addComponent(jButton6)
                     .addComponent(jButton7))
@@ -298,8 +327,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 508, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,16 +369,42 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnIntegrarFilaActionPerformed
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        //cerramos
+        Ventana.setTipoBus(false);
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+       DaoTipoBus dao = new ImplTipoBus();
+       String tipo = txtTipo.getText();
+       
+       if (tipo.isBlank()){
+           JOptionPane.showMessageDialog(null, "Favor de colocar un nombre", "Advertencia", JOptionPane.WARNING_MESSAGE);
+       }else{
+           try {
+               // Verificamos que el nombre no este repetido
+               if (dao.checkBus(txtTipo.getText())) {
+                   JOptionPane.showMessageDialog(null, "El usuario ya existe en la base de datos");
+               } else {
+               }
+           } catch (Exception ex) {
+               System.out.println("error "+ex);
+           }
+           }
+       
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnIntegrarFila;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -364,7 +418,6 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JComboBox<String> jcValor1;
     private javax.swing.JComboBox<String> jcValor2;
     private javax.swing.JComboBox<String> jcValor3;
@@ -376,6 +429,7 @@ public class vistaTipoBus extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCol3;
     private javax.swing.JTextField txtCol4;
     private javax.swing.JTextField txtCol5;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }
 

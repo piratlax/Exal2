@@ -1,7 +1,6 @@
 package com.summsoft.implementaciones;
 
-import com.summsoft.interfases.daoUsuario;
-import com.summsoft.modelos.mdlUsuario;
+import com.summsoft.modelos.MdlUsuario;
 import com.summsoft.utilerias.Conexion;
 import com.summsoft.utilerias.Usuario;
 import java.sql.PreparedStatement;
@@ -9,11 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.summsoft.interfases.DaoUsuario;
 
-public class implUsuario extends Conexion implements daoUsuario {
+public class ImplUsuario extends Conexion implements DaoUsuario {
 
     @Override
-    public boolean registrar(mdlUsuario mdl) throws Exception {
+    public boolean registrar(MdlUsuario mdl) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -48,7 +48,7 @@ public class implUsuario extends Conexion implements daoUsuario {
 
     @Override
     public List listar(String nombre) throws Exception {
-      List<mdlUsuario> lista=null;
+      List<MdlUsuario> lista=null;
         try {
            this.Conectar(); 
            String query = nombre.isEmpty() ? "SELECT * FROM usuarios" : "SELECT * FROM usuarios WHERE nombre LIKE '%"+nombre+"%'";
@@ -56,7 +56,7 @@ public class implUsuario extends Conexion implements daoUsuario {
            lista = new ArrayList<>();
            ResultSet rs = st.executeQuery();
            while(rs.next()) {
-              mdlUsuario mdl = new mdlUsuario();
+              MdlUsuario mdl = new MdlUsuario();
               mdl.setId(rs.getInt("id"));
               mdl.setNombre(rs.getString("nombre"));
               mdl.setUsuario(rs.getString("usuario"));
@@ -99,8 +99,8 @@ public class implUsuario extends Conexion implements daoUsuario {
     }
 
     @Override
-    public mdlUsuario getUsuarioId(int id) throws Exception {
-         mdlUsuario user = new mdlUsuario();
+    public MdlUsuario getUsuarioId(int id) throws Exception {
+         MdlUsuario user = new MdlUsuario();
      try {
            this.Conectar(); 
            PreparedStatement st = this.conexion.prepareStatement("SELECT id,usuario,nombre,clave,telefono FROM users WHERE id = ?");
@@ -126,7 +126,7 @@ public class implUsuario extends Conexion implements daoUsuario {
     }
 
     @Override
-    public boolean actualizar(mdlUsuario mdl) throws Exception {
+    public boolean actualizar(MdlUsuario mdl) throws Exception {
         boolean resultado=false;
         try {
             this.Conectar();

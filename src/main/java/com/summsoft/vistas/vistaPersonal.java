@@ -1,13 +1,13 @@
 package com.summsoft.vistas;
 
-import com.summsoft.implementaciones.implUsuario;
-import com.summsoft.interfases.daoUsuario;
-import com.summsoft.modelos.mdlUsuario;
+import com.summsoft.implementaciones.ImplUsuario;
+import com.summsoft.modelos.MdlUsuario;
 import com.summsoft.utilerias.Utilidades;
 import com.summsoft.utilerias.Ventana;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.summsoft.interfases.DaoUsuario;
 
 public class vistaPersonal extends javax.swing.JInternalFrame {
 
@@ -357,10 +357,10 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
 
 // Rellenar la tabla con datos desde el DAO
         try {
-            daoUsuario dao = new implUsuario();
-            List<mdlUsuario> mdl = dao.listar("");
+            DaoUsuario dao = new ImplUsuario();
+            List<MdlUsuario> mdl = dao.listar("");
 
-            for (mdlUsuario user : mdl) {
+            for (MdlUsuario user : mdl) {
                 model.addRow(new Object[]{
                     user.getId(),
                     user.getNombre(),
@@ -400,7 +400,7 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
         boolean password = !txtClave.getText().trim().isEmpty();
 
         if (nombre && usuario && password) {
-            daoUsuario dao = new implUsuario();
+            DaoUsuario dao = new ImplUsuario();
 
             // revisamos si no hay un nombre o un usario ya en la bd con los mismos datos
             try {
@@ -410,7 +410,7 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
                     //encriptamos
                     String clave = Utilidades.encryptPassword(txtClave.getText());
 
-                    mdlUsuario user = new mdlUsuario();
+                    MdlUsuario user = new MdlUsuario();
                     user.setNombre(txtNombre.getText());
                     user.setUsuario(txtUsuario.getText());
                     user.setTelefono(txtTelefono.getText());
@@ -444,8 +444,8 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
 
             int id = (int) tabla.getValueAt(fila, 0);
             try {
-                daoUsuario dao = new implUsuario();
-                mdlUsuario mdl = dao.getUsuarioId(id);
+                DaoUsuario dao = new ImplUsuario();
+                MdlUsuario mdl = dao.getUsuarioId(id);
 
                 Id=mdl.getId();
                 
@@ -477,7 +477,7 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
 
         if (nombre) {
 
-            mdlUsuario mdl = new mdlUsuario();
+            MdlUsuario mdl = new MdlUsuario();
             mdl.setNombre(txtNombre.getText());
             mdl.setUsuario(txtUsuario.getText());
             mdl.setTelefono(txtTelefono.getText());
@@ -492,7 +492,7 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
             mdl.setId(Id);
 
             try {
-                daoUsuario dao = new implUsuario();
+                DaoUsuario dao = new ImplUsuario();
                 dao.actualizar(mdl);
                 JOptionPane.showMessageDialog(null, "Usuario correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
@@ -516,7 +516,7 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
             int id = (int) tabla.getValueAt(fila, 0);
             String activa = tabla.getValueAt(fila, 5).toString();
             try {
-                daoUsuario dao = new implUsuario();
+                DaoUsuario dao = new ImplUsuario();
                 dao.desactivar(id, activa);
                 Tabla();
             } catch (Exception e) {
@@ -549,10 +549,10 @@ public class vistaPersonal extends javax.swing.JInternalFrame {
 
 // Rellenar la tabla con datos desde el DAO
         try {
-            daoUsuario dao = new implUsuario();
-            List<mdlUsuario> users = dao.listar(txtBuscar.getText());
+            DaoUsuario dao = new ImplUsuario();
+            List<MdlUsuario> users = dao.listar(txtBuscar.getText());
 
-            for (mdlUsuario user : users) {
+            for (MdlUsuario user : users) {
                 model.addRow(new Object[]{
                     user.getId(),
                     user.getNombre(),

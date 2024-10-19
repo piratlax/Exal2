@@ -52,7 +52,6 @@
               <Image iconType="3" name="/mnuAutobuses.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Autobuses"/>
-            <Property name="actionCommand" type="java.lang.String" value="Autobuses"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mnuBusEstilo">

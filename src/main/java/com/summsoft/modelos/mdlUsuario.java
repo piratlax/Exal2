@@ -1,6 +1,6 @@
 package com.summsoft.modelos;
 
-public class mdlUsuario {
+public class MdlUsuario {
 
    private int id;
    private String nombre;
