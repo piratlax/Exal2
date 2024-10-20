@@ -464,16 +464,16 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(true);
         btnActualizar.setEnabled(false);
         btnActivar.setEnabled(true);
-
-        txtNombre.setEnabled(false);
-        txtUsuario.setEnabled(false);
-        txtClave.setEnabled(false);
-        txtTelefono.setEnabled(false);
-
-        txtNombre.setText("");
-        txtUsuario.setText("");
-        txtClave.setText("");
-        txtTelefono.setText("");
+//
+//        txtNombre.setEnabled(false);
+//        txtUsuario.setEnabled(false);
+//        txtClave.setEnabled(false);
+//        txtTelefono.setEnabled(false);
+//
+//        txtNombre.setText("");
+//        txtUsuario.setText("");
+//        txtClave.setText("");
+//        txtTelefono.setText("");
 
     }
 
@@ -500,19 +500,19 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
 
 // Rellenar la tabla con datos desde el DAO
         try {
-            DaoUsuario dao = new ImplUsuario();
-            List<MdlUsuario> mdl = dao.listar("");
-
-            for (MdlUsuario user : mdl) {
-                model.addRow(new Object[]{
-                    user.getId(),
-                    user.getNombre(),
-                    user.getUsuario(),
-                    user.getPerfil(),
-                    user.getTelefono(),
-                    user.getActivo()
-                });
-            }
+//            DaoUsuario dao = new ImplUsuario();
+//            List<MdlUsuario> mdl = dao.listar("");
+//
+//            for (MdlUsuario user : mdl) {
+//                model.addRow(new Object[]{
+//                    user.getId(),
+//                    user.getNombre(),
+//                    user.getUsuario(),
+//                    user.getPerfil(),
+//                    user.getTelefono(),
+//                    user.getActivo()
+//                });
+//            }
         } catch (Exception e) {
             System.out.println("error " + e);
         }
@@ -530,73 +530,73 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(false);
         btnActualizar.setEnabled(false);
         btnActivar.setEnabled(false);
-
-        txtNombre.setEnabled(true);
-        txtUsuario.setEnabled(true);
-        txtClave.setEnabled(true);
+//
+//        txtNombre.setEnabled(true);
+//        txtUsuario.setEnabled(true);
+//        txtClave.setEnabled(true);
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnIntegrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntegrarActionPerformed
-        boolean nombre = !txtNombre.getText().trim().isEmpty();
-        boolean usuario = !txtUsuario.getText().trim().isEmpty();
-        boolean password = !txtClave.getText().trim().isEmpty();
+//        boolean nombre = !txtNombre.getText().trim().isEmpty();
+//        boolean usuario = !txtUsuario.getText().trim().isEmpty();
+//        boolean password = !txtClave.getText().trim().isEmpty();
+//
+//        if (nombre && usuario && password) {
+//            DaoUsuario dao = new ImplUsuario();
+//
+//            // revisamos si no hay un nombre o un usario ya en la bd con los mismos datos
+//            try {
+//                if (dao.checkUsuario(txtUsuario.getText())) {
+//                    JOptionPane.showMessageDialog(null, "El usuario ya existe en la base de datos");
+//                } else {
+//                    //encriptamos
+//                    String clave = Utilidades.encryptPassword(txtClave.getText());
+//
+//                    MdlUsuario user = new MdlUsuario();
+//                    user.setNombre(txtNombre.getText());
+//                    user.setUsuario(txtUsuario.getText());
+//                    user.setTelefono(txtTelefono.getText());
+//                    user.setClave(clave);
+//                    user.setPerfil(jcPerfil.getSelectedItem().toString());
 
-        if (nombre && usuario && password) {
-            DaoUsuario dao = new ImplUsuario();
-
-            // revisamos si no hay un nombre o un usario ya en la bd con los mismos datos
-            try {
-                if (dao.checkUsuario(txtUsuario.getText())) {
-                    JOptionPane.showMessageDialog(null, "El usuario ya existe en la base de datos");
-                } else {
-                    //encriptamos
-                    String clave = Utilidades.encryptPassword(txtClave.getText());
-
-                    MdlUsuario user = new MdlUsuario();
-                    user.setNombre(txtNombre.getText());
-                    user.setUsuario(txtUsuario.getText());
-                    user.setTelefono(txtTelefono.getText());
-                    user.setClave(clave);
-                    user.setPerfil(jcPerfil.getSelectedItem().toString());
-
-                    if (dao.registrar(user)) {
-                        JOptionPane.showMessageDialog(null, "Personal correctamente integrado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    }
-                }
-            } catch (Exception ex) {
-            }
+//                    if (dao.registrar(user)) {
+//                        JOptionPane.showMessageDialog(null, "Personal correctamente integrado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//                    }
+//                }
+//            } catch (Exception ex) {
+//            }
 
             Tabla();
             Inicio();
-        }
+//        }
     }//GEN-LAST:event_btnIntegrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
             int fila = tabla.getSelectedRow();
 
-        if (fila >= 0) {
+//        if (fila >= 0) {
 
-            txtNombre.setEnabled(true);
-            txtClave.setEnabled(true);
-            jcPerfil.setEnabled(true);
-            txtTelefono.setEnabled(true);
-            
-
-            int id = (int) tabla.getValueAt(fila, 0);
-            try {
-                DaoUsuario dao = new ImplUsuario();
-                MdlUsuario mdl = dao.getUsuarioId(id);
-
-                Id=mdl.getId();
-                
-                txtNombre.setText(mdl.getNombre());
-                txtUsuario.setText(mdl.getUsuario());
-                Clave = mdl.getClave();
-                txtTelefono.setText(mdl.getTelefono());
-                
+//            txtNombre.setEnabled(true);
+//            txtClave.setEnabled(true);
+//            jcPerfil.setEnabled(true);
+//            txtTelefono.setEnabled(true);
+//            
+//
+//            int id = (int) tabla.getValueAt(fila, 0);
+//            try {
+//                DaoUsuario dao = new ImplUsuario();
+//                MdlUsuario mdl = dao.getUsuarioId(id);
+//
+//                Id=mdl.getId();
+//                
+//                txtNombre.setText(mdl.getNombre());
+//                txtUsuario.setText(mdl.getUsuario());
+//                Clave = mdl.getClave();
+//                txtTelefono.setText(mdl.getTelefono());
+//                
                 
                 btnNuevo.setEnabled(false);
                 btnIntegrar.setEnabled(false);
@@ -605,50 +605,49 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
 
                 btnActualizar.setEnabled(true);
 
-            } catch (Exception e) {
-                System.out.println("error " + e);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecciona un elemento de la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+//            } catch (Exception e) {
+//                System.out.println("error " + e);
+//            }
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Selecciona un elemento de la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
-        boolean nombre = !txtNombre.getText().trim().isEmpty();
-        
-
-        if (nombre) {
-
-            MdlUsuario mdl = new MdlUsuario();
-            mdl.setNombre(txtNombre.getText());
-            mdl.setUsuario(txtUsuario.getText());
-            mdl.setTelefono(txtTelefono.getText());
-            mdl.setPerfil(jcPerfil.getSelectedItem().toString());
-            
-            if (txtClave.getText().equals("")){
-               mdl.setClave(Clave);
-            }else{
-                mdl.setClave(Utilidades.encryptPassword(txtClave.getText()));
-            }
-            
-            mdl.setId(Id);
-
-            try {
-                DaoUsuario dao = new ImplUsuario();
-                dao.actualizar(mdl);
-                JOptionPane.showMessageDialog(null, "Usuario correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
-                System.out.println("Error " + e);
-            }
-            Inicio();
-            Tabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-
-        }
-        
-
+//        boolean nombre = !txtNombre.getText().trim().isEmpty();
+//        
+//        if (nombre) {
+//
+//            MdlUsuario mdl = new MdlUsuario();
+//            mdl.setNombre(txtNombre.getText());
+//            mdl.setUsuario(txtUsuario.getText());
+//            mdl.setTelefono(txtTelefono.getText());
+//            mdl.setPerfil(jcPerfil.getSelectedItem().toString());
+//            
+//            if (txtClave.getText().equals("")){
+//               mdl.setClave(Clave);
+//            }else{
+//                mdl.setClave(Utilidades.encryptPassword(txtClave.getText()));
+//            }
+//            
+//            mdl.setId(Id);
+//
+//            try {
+//                DaoUsuario dao = new ImplUsuario();
+//                dao.actualizar(mdl);
+//                JOptionPane.showMessageDialog(null, "Usuario correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+//            } catch (Exception e) {
+//                System.out.println("Error " + e);
+//            }
+//            Inicio();
+//            Tabla();
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//
+//        }
+//        
+//
 
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -658,12 +657,12 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
         if (fila >= 0) {
             int id = (int) tabla.getValueAt(fila, 0);
             String activa = tabla.getValueAt(fila, 5).toString();
-            try {
-                DaoUsuario dao = new ImplUsuario();
-                dao.desactivar(id, activa);
-                Tabla();
-            } catch (Exception e) {
-            }
+//            try {
+//                DaoUsuario dao = new ImplUsuario();
+//                dao.desactivar(id, activa);
+//                Tabla();
+//            } catch (Exception e) {
+//            }
         } else {
             JOptionPane.showMessageDialog(this, "Selecciona un usuario de la tabla");
         }    
@@ -691,23 +690,23 @@ public class VistaAutobus extends javax.swing.JInternalFrame {
         tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
 
 // Rellenar la tabla con datos desde el DAO
-        try {
-            DaoUsuario dao = new ImplUsuario();
-            List<MdlUsuario> users = dao.listar(txtBuscar.getText());
-
-            for (MdlUsuario user : users) {
-                model.addRow(new Object[]{
-                    user.getId(),
-                    user.getNombre(),
-                    user.getUsuario(),
-                    user.getPerfil(),
-                    user.getTelefono(),
-                    user.getActivo()
-                });
-            }
-        } catch (Exception e) {
-            System.out.println("error " + e);
-        }
+//        try {
+//            DaoUsuario dao = new ImplUsuario();
+//            List<MdlUsuario> users = dao.listar(txtBuscar.getText());
+//
+//            for (MdlUsuario user : users) {
+//                model.addRow(new Object[]{
+//                    user.getId(),
+//                    user.getNombre(),
+//                    user.getUsuario(),
+//                    user.getPerfil(),
+//                    user.getTelefono(),
+//                    user.getActivo()
+//                });
+//            }
+//        } catch (Exception e) {
+//            System.out.println("error " + e);
+//        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed

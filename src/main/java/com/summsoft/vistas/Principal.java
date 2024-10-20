@@ -51,6 +51,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mnuBusEstilo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        mnuTerminal = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,7 +137,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuAutobuses.png"))); // NOI18N
         jMenu1.setText("Autobuses");
-        jMenu1.setActionCommand("Autobuses");
 
         mnuBusEstilo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuEstilos.png"))); // NOI18N
         mnuBusEstilo.setText("Tipo y Diseño");
@@ -149,7 +149,18 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuTerminal.png"))); // NOI18N
         jMenu3.setText("Terminales");
+
+        mnuTerminal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuTerminales.png"))); // NOI18N
+        mnuTerminal.setText("Terminal");
+        mnuTerminal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuTerminalActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mnuTerminal);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -193,6 +204,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuBusEstiloActionPerformed
 
+    private void mnuTerminalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTerminalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuTerminalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -209,6 +224,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuPersonal;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenu mnuSistema;
+    private javax.swing.JMenuItem mnuTerminal;
     private javax.swing.JPanel status;
     private javax.swing.JLabel txtFecha;
     private javax.swing.JLabel txtPersonalActivo;
