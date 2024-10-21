@@ -1,9 +1,13 @@
 package com.summsoft.vistas;
 
+import com.summsoft.implementaciones.ImplTerminal;
+import com.summsoft.interfases.DaoTerminales;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.summsoft.interfases.DaoUsuario;
+import com.summsoft.modelos.MdlTerminal;
+import com.summsoft.utilerias.Ventana;
 
 public class VistaTerminal extends javax.swing.JInternalFrame {
 
@@ -13,7 +17,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
     public VistaTerminal() {
         initComponents();
         Inicio();
-        Tabla();
+        Tabla("");
     }
 
     /**
@@ -323,10 +327,10 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
     }
 
-    private void Tabla() {
+    private void Tabla(String buscar) {
  // Definición de la cabecera y anchos de las columnas
         String[] cabecera = {"Id", "Nombre", "Abrev", "Direccion", "Telefono","Tipo", "Activo"};
-        int[] anchos = {0, 150, 50, 50, 50, 50, 50};
+        int[] anchos = {0, 150, 20, 150, 50, 50, 20};
 
 // Obtener el modelo y limpiar la tabla
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -347,17 +351,18 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 // Rellenar la tabla con datos desde el DAO
         try {
             
-            DaoUsuario dao = new ImplUsuario();
-            List<MdlUsuario> mdl = dao.listar("");
+            DaoTerminales dao = new ImplTerminal();
+            List<MdlTerminal> mdl = dao.listar(buscar);
 
-            for (MdlUsuario user : mdl) {
+            for (MdlTerminal term : mdl) {
                 model.addRow(new Object[]{
-                    user.getId(),
-                    user.getNombre(),
-                    user.getUsuario(),
-                    user.getPerfil(),
-                    user.getTelefono(),
-                    user.getActivo()
+                    term.getId(),
+                    term.getNombre(),
+                    term.getAbrev(),
+                    term.getDireccion(),
+                    term.getTelefono(),
+                    term.getTipo(),
+                    term.getActivo()
                 });
             }
         } catch (Exception e) {
@@ -367,7 +372,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         //cerramos
-        Ventana.setPersonal(false);
+        Ventana.setTerminal(false);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -379,36 +384,34 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         btnActivar.setEnabled(false);
 
         txtNombre.setEnabled(true);
-        txtUsuario.setEnabled(true);
-        txtClave.setEnabled(true);
+        txtAbrev.setEnabled(true);
+        txtDireccion.setEnabled(true);
+        txtTelefono.setEnabled(true);
+        jcTipo.setEnabled(true);
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnIntegrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntegrarActionPerformed
         boolean nombre = !txtNombre.getText().trim().isEmpty();
-        boolean usuario = !txtUsuario.getText().trim().isEmpty();
-        boolean password = !txtClave.getText().trim().isEmpty();
+        boolean abrev = !txtAbrev.getText().trim().isEmpty();
 
-        if (nombre && usuario && password) {
-            DaoUsuario dao = new ImplUsuario();
+        if (nombre && abrev) {
+            DaoTerminales dao = new ImplTerminal();
 
             // revisamos si no hay un nombre o un usario ya en la bd con los mismos datos
             try {
-                if (dao.checkUsuario(txtUsuario.getText())) {
-                    JOptionPane.showMessageDialog(null, "El usuario ya existe en la base de datos");
+                if (dao.checarRepetido(txtNombre.getText(), txtAbrev.getText())) {
+                    JOptionPane.showMessageDialog(null, "El nombre o abrev ya existe en la base de datos");
                 } else {
-                    //encriptamos
-                    String clave = Utilidades.encryptPassword(txtClave.getText());
+                    MdlTerminal term = new MdlTerminal();
+                    term.setNombre(txtNombre.getText());
+                    term.setDireccion(txtDireccion.getText());
+                    term.setAbrev(txtAbrev.getText());
+                    term.setTelefono(txtTelefono.getText());
+                    term.setTipo(jcTipo.getSelectedItem().toString());
 
-                    MdlUsuario user = new MdlUsuario();
-                    user.setNombre(txtNombre.getText());
-                    user.setUsuario(txtUsuario.getText());
-                    user.setTelefono(txtTelefono.getText());
-                    user.setClave(clave);
-                    user.setPerfil(jcPerfil.getSelectedItem().toString());
-
-                    if (dao.registrar(user)) {
-                        JOptionPane.showMessageDialog(null, "Personal correctamente integrado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    if (dao.registrar(term)) {
+                        JOptionPane.showMessageDialog(null, "Terminal correctamente integrada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                     }
@@ -416,7 +419,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
             } catch (Exception ex) {
             }
 
-            Tabla();
+            Tabla("");
             Inicio();
         }
     }//GEN-LAST:event_btnIntegrarActionPerformed
@@ -427,21 +430,22 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         if (fila >= 0) {
 
             txtNombre.setEnabled(true);
-            txtClave.setEnabled(true);
-            jcPerfil.setEnabled(true);
+            txtDireccion.setEnabled(true);
+            jcTipo.setEnabled(true);
             txtTelefono.setEnabled(true);
+            txtAbrev.setEnabled(true);
             
 
             int id = (int) tabla.getValueAt(fila, 0);
             try {
-                DaoUsuario dao = new ImplUsuario();
-                MdlUsuario mdl = dao.getUsuarioId(id);
+                DaoTerminales dao = new ImplTerminal();
+                MdlTerminal mdl = dao.getTerminalId(id);
 
                 Id=mdl.getId();
                 
                 txtNombre.setText(mdl.getNombre());
-                txtUsuario.setText(mdl.getUsuario());
-                Clave = mdl.getClave();
+                txtDireccion.setText(mdl.getDireccion());
+                txtAbrev.setText(mdl.getAbrev());
                 txtTelefono.setText(mdl.getTelefono());
                 
                 
@@ -463,33 +467,29 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
         boolean nombre = !txtNombre.getText().trim().isEmpty();
+        boolean abrev = !txtAbrev.getText().trim().isEmpty();
         
 
-        if (nombre) {
+        if (nombre && abrev) {
 
-            MdlUsuario mdl = new MdlUsuario();
+            MdlTerminal mdl = new MdlTerminal();
             mdl.setNombre(txtNombre.getText());
-            mdl.setUsuario(txtUsuario.getText());
+            mdl.setDireccion(txtDireccion.getText());
+            mdl.setAbrev(txtAbrev.getText());
             mdl.setTelefono(txtTelefono.getText());
-            mdl.setPerfil(jcPerfil.getSelectedItem().toString());
-            
-            if (txtClave.getText().equals("")){
-               mdl.setClave(Clave);
-            }else{
-                mdl.setClave(Utilidades.encryptPassword(txtClave.getText()));
-            }
+            mdl.setTipo(jcTipo.getSelectedItem().toString());
             
             mdl.setId(Id);
 
             try {
-                DaoUsuario dao = new ImplUsuario();
+                DaoTerminales dao = new ImplTerminal();
                 dao.actualizar(mdl);
                 JOptionPane.showMessageDialog(null, "Usuario correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
                 System.out.println("Error " + e);
             }
             Inicio();
-            Tabla();
+            Tabla("");
         } else {
             JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
 
@@ -504,11 +504,11 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
         if (fila >= 0) {
             int id = (int) tabla.getValueAt(fila, 0);
-            String activa = tabla.getValueAt(fila, 5).toString();
+            String activa = tabla.getValueAt(fila, 6).toString();
             try {
-                DaoUsuario dao = new ImplUsuario();
+                DaoTerminales dao = new ImplTerminal();
                 dao.desactivar(id, activa);
-                Tabla();
+                Tabla("");
             } catch (Exception e) {
             }
         } else {
@@ -517,49 +517,12 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnActivarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       // Definición de la cabecera y anchos de las columnas
-        String[] cabecera = {"Id", "Nombre", "Usuario", "Perfil", "Telefono", "Activo"};
-        int[] anchos = {0, 150, 50, 50, 50, 50};
-
-// Obtener el modelo y limpiar la tabla
-        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        model.setRowCount(0);
-
-// Agregar la cabecera al modelo
-        model.setDataVector(null, cabecera);
-
-// Establecer los anchos de las columnas
-        for (int i = 0; i < cabecera.length; i++) {
-            tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-            tabla.setFont(new java.awt.Font("Tahoma", 0, 14));
-        }
-        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
-        tabla.getColumnModel().getColumn(0).setMinWidth(0);
-        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
-
-// Rellenar la tabla con datos desde el DAO
-        try {
-            DaoUsuario dao = new ImplUsuario();
-            List<MdlUsuario> users = dao.listar(txtBuscar.getText());
-
-            for (MdlUsuario user : users) {
-                model.addRow(new Object[]{
-                    user.getId(),
-                    user.getNombre(),
-                    user.getUsuario(),
-                    user.getPerfil(),
-                    user.getTelefono(),
-                    user.getActivo()
-                });
-            }
-        } catch (Exception e) {
-            System.out.println("error " + e);
-        }
+       Tabla(txtBuscar.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
        txtBuscar.setText((""));
-       Tabla();
+       Tabla("");
     }//GEN-LAST:event_jButton8ActionPerformed
 
     

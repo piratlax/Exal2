@@ -8,6 +8,15 @@ private String direccion;
 private String Abrev;
 private String telefono;
 private String tipo;
+private String Activo;
+
+    public String getActivo() {
+        return Activo;
+    }
+
+    public void setActivo(String Activo) {
+        this.Activo = Activo;
+    }
 
     public int getId() {
         return id;

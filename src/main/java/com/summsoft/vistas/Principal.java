@@ -205,7 +205,13 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuBusEstiloActionPerformed
 
     private void mnuTerminalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTerminalActionPerformed
-        // TODO add your handling code here:
+        if (!Ventana.isTerminal()){
+            VistaTerminal term = new VistaTerminal();
+            Dashboard.add(term);
+            term.setLocation(100,1);
+            term.setVisible(true);
+            Ventana.setTerminal(true);
+        }
     }//GEN-LAST:event_mnuTerminalActionPerformed
 
     /**
