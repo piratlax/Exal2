@@ -1,21 +1,41 @@
 package com.summsoft.vistas;
 
-import com.summsoft.implementaciones.ImplTerminal;
-import com.summsoft.interfases.DaoTerminales;
+import com.summsoft.implementaciones.ImplRutas;
+import com.summsoft.interfases.DaoRutas;
+import com.summsoft.modelos.MdlRutas;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import com.summsoft.modelos.MdlTerminal;
 import com.summsoft.utilerias.Ventana;
+import javax.swing.DefaultComboBoxModel;
 
-public class VistaTerminal extends javax.swing.JInternalFrame {
+public class VistaRutas extends javax.swing.JInternalFrame {
 
     private int Id;
+    DefaultComboBoxModel modeloOrigen;
+    DefaultComboBoxModel modeloDestino;
     
-    public VistaTerminal() {
+    public VistaRutas() {
+        modeloOrigen = new DefaultComboBoxModel(new String[]{});
+        modeloDestino = new DefaultComboBoxModel(new String[]{});
         initComponents();
         Inicio();
         Tabla("");
+        llenaCombos();
+    }
+    
+    private void llenaCombos(){
+        try {
+            DaoRutas dao = new ImplRutas();
+            List<MdlRutas> mdl = dao.lista("");
+
+            for (MdlRutas term : mdl) {
+                modeloOrigen.addElement(term.getOrigen());
+                modeloDestino.addElement(term.getOrigen());
+            }
+        } catch (Exception e) {
+            System.out.println("error " + e);
+        }
     }
 
     /**
@@ -36,16 +56,10 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         btnActivar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        txtDireccion = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtAbrev = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jcTipo = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
+        jcOrigen = new javax.swing.JComboBox<>();
+        jcDestino = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -54,8 +68,8 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         jButton8 = new javax.swing.JButton();
 
         setResizable(true);
-        setTitle("Gestión Terminales");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuTerminales.png"))); // NOI18N
+        setTitle("Gestión Rutas");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuRutas.png"))); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
 
@@ -137,19 +151,15 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
                 .addComponent(btnSalir))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Terminal"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Ruta"));
 
-        jLabel1.setText("Nombre:");
+        jcOrigen.setModel(modeloOrigen);
 
-        jLabel2.setText("Dirección:");
+        jcDestino.setModel(modeloDestino);
 
-        jLabel3.setText("Abreviatura ");
+        jLabel6.setText("Origen");
 
-        jLabel4.setText("Telefono:");
-
-        jcTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terminal", "Parada", "Intermedio" }));
-
-        jLabel5.setText("Tipo:");
+        jLabel7.setText("Destino");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -157,52 +167,29 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtAbrev, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtTelefono))))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDireccion)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jcTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jcDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAbrev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jcOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado"));
@@ -243,9 +230,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -312,23 +297,16 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         btnActualizar.setEnabled(false);
         btnActivar.setEnabled(true);
 
-        txtNombre.setEnabled(false);
-        txtDireccion.setEnabled(false);
-        txtAbrev.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        jcTipo.setEnabled(false);
-
-        txtNombre.setText("");
-        txtDireccion.setText("");
-        txtAbrev.setText("");
-        txtTelefono.setText("");
+        jcOrigen.setEnabled(false);
+        jcDestino.setEnabled(false);
+        
 
     }
 
     private void Tabla(String buscar) {
  // Definición de la cabecera y anchos de las columnas
-        String[] cabecera = {"Id", "Nombre", "Abrev", "Direccion", "Telefono","Tipo", "Activo"};
-        int[] anchos = {0, 150, 20, 150, 50, 50, 20};
+        String[] cabecera = {"Id", "Nombre", "Origen", "Destino","Activa"};
+        int[] anchos = {0, 50, 200, 200, 50};
 
 // Obtener el modelo y limpiar la tabla
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -349,18 +327,16 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 // Rellenar la tabla con datos desde el DAO
         try {
             
-            DaoTerminales dao = new ImplTerminal();
-            List<MdlTerminal> mdl = dao.listar(buscar);
+            DaoRutas dao = new ImplRutas();
+            List<MdlRutas> mdl = dao.lista(buscar);
 
-            for (MdlTerminal term : mdl) {
+            for (MdlRutas rut : mdl) {
                 model.addRow(new Object[]{
-                    term.getId(),
-                    term.getNombre(),
-                    term.getAbrev(),
-                    term.getDireccion(),
-                    term.getTelefono(),
-                    term.getTipo(),
-                    term.getActivo()
+                    rut.getId(),
+                    rut.getNombre(),
+                    rut.getOrigen(),
+                    rut.getDestino(),
+                    rut.getActiva()
                 });
             }
         } catch (Exception e) {
@@ -370,7 +346,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         //cerramos
-        Ventana.setTerminal(false);
+        Ventana.setRutas(false);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -381,35 +357,23 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
         btnActualizar.setEnabled(false);
         btnActivar.setEnabled(false);
 
-        txtNombre.setEnabled(true);
-        txtAbrev.setEnabled(true);
-        txtDireccion.setEnabled(true);
-        txtTelefono.setEnabled(true);
-        jcTipo.setEnabled(true);
-
+        jcOrigen.setEnabled(true);
+        jcDestino.setEnabled(true);
+        
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnIntegrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntegrarActionPerformed
-        boolean nombre = !txtNombre.getText().trim().isEmpty();
-        boolean abrev = !txtAbrev.getText().trim().isEmpty();
 
-        if (nombre && abrev) {
-            DaoTerminales dao = new ImplTerminal();
-
-            // revisamos si no hay un nombre o un usario ya en la bd con los mismos datos
+            DaoRutas dao = new ImplRutas();
+            String Origen = jcOrigen.getSelectedItem().toString();
+            String Destino = jcDestino.getSelectedItem().toString();
+            // revisamos si la ruta ya existe
             try {
-                if (dao.checarRepetido(txtNombre.getText(), txtAbrev.getText())) {
-                    JOptionPane.showMessageDialog(null, "El nombre o abrev ya existe en la base de datos");
+                if (dao.checarRepetido(Origen, Destino)) {
+                    JOptionPane.showMessageDialog(null, "La ruta ya esta registrada");
                 } else {
-                    MdlTerminal term = new MdlTerminal();
-                    term.setNombre(txtNombre.getText());
-                    term.setDireccion(txtDireccion.getText());
-                    term.setAbrev(txtAbrev.getText());
-                    term.setTelefono(txtTelefono.getText());
-                    term.setTipo(jcTipo.getSelectedItem().toString());
-
-                    if (dao.registrar(term)) {
-                        JOptionPane.showMessageDialog(null, "Terminal correctamente integrada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                   if (dao.registrar(Origen, Destino)) {
+                        JOptionPane.showMessageDialog(null, "Ruta correctamente integrada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                     }
@@ -419,7 +383,7 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
             Tabla("");
             Inicio();
-        }
+       
     }//GEN-LAST:event_btnIntegrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -427,26 +391,11 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
         if (fila >= 0) {
 
-            txtNombre.setEnabled(true);
-            txtDireccion.setEnabled(true);
-            jcTipo.setEnabled(true);
-            txtTelefono.setEnabled(true);
-            txtAbrev.setEnabled(true);
+            jcOrigen.setEnabled(true);
+            jcDestino.setEnabled(true);
             
-
             int id = (int) tabla.getValueAt(fila, 0);
             try {
-                DaoTerminales dao = new ImplTerminal();
-                MdlTerminal mdl = dao.getTerminalId(id);
-
-                Id=mdl.getId();
-                
-                txtNombre.setText(mdl.getNombre());
-                txtDireccion.setText(mdl.getDireccion());
-                txtAbrev.setText(mdl.getAbrev());
-                txtTelefono.setText(mdl.getTelefono());
-                
-                
                 btnNuevo.setEnabled(false);
                 btnIntegrar.setEnabled(false);
                 btnEditar.setEnabled(false);
@@ -463,38 +412,20 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+            String Origen = jcOrigen.getSelectedItem().toString();
+            String Destino = jcDestino.getSelectedItem().toString();
 
-        boolean nombre = !txtNombre.getText().trim().isEmpty();
-        boolean abrev = !txtAbrev.getText().trim().isEmpty();
-        
-
-        if (nombre && abrev) {
-
-            MdlTerminal mdl = new MdlTerminal();
-            mdl.setNombre(txtNombre.getText());
-            mdl.setDireccion(txtDireccion.getText());
-            mdl.setAbrev(txtAbrev.getText());
-            mdl.setTelefono(txtTelefono.getText());
-            mdl.setTipo(jcTipo.getSelectedItem().toString());
-            
-            mdl.setId(Id);
 
             try {
-                DaoTerminales dao = new ImplTerminal();
-                dao.actualizar(mdl);
-                JOptionPane.showMessageDialog(null, "Usuario correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                DaoRutas dao = new ImplRutas();
+                dao.actualizar(Origen, Destino, Id);
+                JOptionPane.showMessageDialog(null, "Ruta correctamente actualizado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
                 System.out.println("Error " + e);
             }
             Inicio();
             Tabla("");
-        } else {
-            JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-
-        }
         
-
-
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarActionPerformed
@@ -502,15 +433,15 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
 
         if (fila >= 0) {
             int id = (int) tabla.getValueAt(fila, 0);
-            String activa = tabla.getValueAt(fila, 6).toString();
+            String activa = tabla.getValueAt(fila, 4).toString();
             try {
-                DaoTerminales dao = new ImplTerminal();
+                DaoRutas dao = new ImplRutas();
                 dao.desactivar(id, activa);
                 Tabla("");
             } catch (Exception e) {
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un usuario de la tabla");
+            JOptionPane.showMessageDialog(this, "Selecciona ruta de la tabla");
         }    
     }//GEN-LAST:event_btnActivarActionPerformed
 
@@ -534,22 +465,16 @@ public class VistaTerminal extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> jcTipo;
+    private javax.swing.JComboBox<String> jcDestino;
+    private javax.swing.JComboBox<String> jcOrigen;
     private javax.swing.JTable tabla;
-    private javax.swing.JTextField txtAbrev;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtDireccion;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

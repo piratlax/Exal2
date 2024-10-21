@@ -5,6 +5,15 @@ public class Ventana {
 private static boolean Personal;
 private static boolean TipoBus;
 private static boolean Terminal;
+private static boolean Rutas;
+
+    public static boolean isRutas() {
+        return Rutas;
+    }
+
+    public static void setRutas(boolean Rutas) {
+        Ventana.Rutas = Rutas;
+    }
 
     public static boolean isTerminal() {
         return Terminal;

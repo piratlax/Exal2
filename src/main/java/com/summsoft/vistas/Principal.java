@@ -52,6 +52,7 @@ public class Principal extends javax.swing.JFrame {
         mnuBusEstilo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mnuTerminal = new javax.swing.JMenuItem();
+        mnuRutas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,6 +162,15 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mnuTerminal);
 
+        mnuRutas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mnuRutas.png"))); // NOI18N
+        mnuRutas.setText("Rutas");
+        mnuRutas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRutasActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mnuRutas);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -214,6 +224,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuTerminalActionPerformed
 
+    private void mnuRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRutasActionPerformed
+      if (!Ventana.isRutas()){
+            VistaRutas rutas = new VistaRutas();
+            Dashboard.add(rutas);
+            rutas.setLocation(100,1);
+            rutas.setVisible(true);
+            Ventana.setRutas(true);
+        }
+    }//GEN-LAST:event_mnuRutasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -228,6 +248,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mnuBusEstilo;
     private javax.swing.JMenuItem mnuPersonal;
+    private javax.swing.JMenuItem mnuRutas;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenu mnuSistema;
     private javax.swing.JMenuItem mnuTerminal;
