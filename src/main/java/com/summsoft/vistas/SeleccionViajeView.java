@@ -19,7 +19,7 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
         
  // Definición de la cabecera y anchos de las columnas
         String[] cabecera = {"Id", "Folio", "Ruta", "Hora","Bus","Conductor"};
-        int[] anchos = {0, 50, 50, 50, 30,150};
+        int[] anchos = {0, 50, 50, 50, 40,150};
 
 // Obtener el modelo y limpiar la tabla
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
