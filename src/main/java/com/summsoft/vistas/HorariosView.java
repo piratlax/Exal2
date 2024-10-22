@@ -6,6 +6,7 @@ import com.summsoft.interfases.DaoRutas;
 import com.summsoft.interfases.HorarioDao;
 import com.summsoft.modelos.Bus;
 import com.summsoft.modelos.Conductor;
+import com.summsoft.modelos.Horario;
 import com.summsoft.modelos.MdlRutas;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -197,6 +198,8 @@ public class HorariosView extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Folio:");
 
+        jTextField2.setEditable(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -365,8 +368,8 @@ public class HorariosView extends javax.swing.JInternalFrame {
 
     private void Tabla(String buscar) {
  // Definición de la cabecera y anchos de las columnas
-        String[] cabecera = {"Id", "Nombre", "Origen", "Destino","Activa"};
-        int[] anchos = {0, 50, 200, 200, 50};
+        String[] cabecera = {"Id", "Folio", "Ruta", "Hora","Bus","Conductor","Activa"};
+        int[] anchos = {0, 40, 40, 40, 40,150,40};
 
 // Obtener el modelo y limpiar la tabla
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -387,16 +390,18 @@ public class HorariosView extends javax.swing.JInternalFrame {
 // Rellenar la tabla con datos desde el DAO
         try {
             
-            DaoRutas dao = new ImplRutas();
-            List<MdlRutas> mdl = dao.lista(buscar);
+            HorarioDao dao = new HorarioImpl();
+            List<Horario> mdl = dao.lista(buscar);
 
-            for (MdlRutas rut : mdl) {
+            for (Horario h : mdl) {
                 model.addRow(new Object[]{
-                    rut.getId(),
-                    rut.getNombre(),
-                    rut.getOrigen(),
-                    rut.getDestino(),
-                    rut.getActiva()
+                    h.getId(),
+                    h.getFolio(),
+                    h.getRuta(),
+                    h.getHora(),
+                    h.getBus(),
+                    h.getConductor(),
+                    h.getActivo()
                 });
             }
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.summsoft.implementaciones;
 import com.summsoft.interfases.HorarioDao;
 import com.summsoft.modelos.Bus;
 import com.summsoft.modelos.Conductor;
+import com.summsoft.modelos.Horario;
 import com.summsoft.modelos.MdlRutas;
 import com.summsoft.utilerias.Conexion;
 import com.summsoft.utilerias.Usuario;
@@ -158,8 +159,8 @@ public class HorarioImpl extends Conexion implements HorarioDao{
         
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO horarios (rutas_id, autobuses_id, conductores_id, folio, hora, personal) "
-                    + "VALUES ((SELECT id FROM rutas WHERE nombre = ?), (SELECT id FROM autobuses WHERE numero = ?), (SELECT id FROM conductores WHERE nombre= ?), ?, ?, ?)");
+            PreparedStatement st = this.conexion.prepareStatement("INSERT INTO horarios (rutas_id, autobuses_id, conductores_id, folio, hora, personal, fecha) "
+                    + "VALUES ((SELECT id FROM rutas WHERE nombre = ?), (SELECT id FROM autobuses WHERE numero = ?), (SELECT id FROM conductores WHERE nombre= ?), ?, ?, ?, CURDATE())");
             st.setString(1, ruta);
             st.setString(2, Bus);
             st.setString(3, Conductor);
@@ -196,5 +197,39 @@ public class HorarioImpl extends Conexion implements HorarioDao{
             }
         }
         return ultimo_boleto;
+    }
+
+    @Override
+    public List lista(String buscar) throws Exception {
+    List<Horario> lista=null;
+        try {
+           this.Conectar(); 
+           String query = buscar.isEmpty() ? "SELECT h.id, h.folio, r.nombre, h.hora, b.numero, c.nombre, h.activo FROM horarios as h " +
+            "INNER JOIN rutas as r ON h.rutas_id = r.id INNER JOIN autobuses as b ON h.autobuses_id = b.id " +
+            "INNER JOIN conductores as c ON h.conductores_id = c.id WHERE h.fecha = CURDATE()" : "SELECT * FROM horarios WHERE nombre LIKE '%"+buscar+"%'";
+           
+           PreparedStatement st = this.conexion.prepareStatement(query);
+           lista = new ArrayList<>();
+           ResultSet rs = st.executeQuery();
+           while(rs.next()) {
+              Horario mdl = new Horario();
+              mdl.setId(rs.getInt("id"));
+              mdl.setFolio(rs.getString("folio"));
+              mdl.setRuta(rs.getString("r.nombre"));
+              mdl.setHora(rs.getString("hora"));
+              mdl.setBus(rs.getString("numero"));
+              mdl.setConductor(rs.getString("c.nombre"));
+              mdl.setActivo(rs.getString("activo"));
+              
+              lista.add(mdl);
+           }
+           rs.close();
+           st.close();
+        } catch (SQLException e) {
+            System.out.println("error " + e);
+        } finally {
+            this.Cerrar();
+        }
+        return lista;   
     }
 }
