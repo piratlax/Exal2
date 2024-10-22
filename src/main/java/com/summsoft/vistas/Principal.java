@@ -53,6 +53,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         mnuTerminal = new javax.swing.JMenuItem();
         mnuRutas = new javax.swing.JMenuItem();
+        mnuHorario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -171,6 +172,15 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(mnuRutas);
 
+        mnuHorario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/horarioMnu.png"))); // NOI18N
+        mnuHorario.setText("Agregar Viaje");
+        mnuHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuHorarioActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mnuHorario);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -234,6 +244,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuRutasActionPerformed
 
+    private void mnuHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuHorarioActionPerformed
+      if (!Ventana.isHorarios()){
+            HorariosView horario = new HorariosView();
+            Dashboard.add(horario);
+            horario.setLocation(100,1);
+            horario.setVisible(true);
+            Ventana.setHorarios(true);
+        }
+    }//GEN-LAST:event_mnuHorarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -247,6 +267,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mnuBusEstilo;
+    private javax.swing.JMenuItem mnuHorario;
     private javax.swing.JMenuItem mnuPersonal;
     private javax.swing.JMenuItem mnuRutas;
     private javax.swing.JMenuItem mnuSalir;

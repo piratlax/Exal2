@@ -6,6 +6,15 @@ private static boolean Personal;
 private static boolean TipoBus;
 private static boolean Terminal;
 private static boolean Rutas;
+private static boolean Horarios;
+
+    public static boolean isHorarios() {
+        return Horarios;
+    }
+
+    public static void setHorarios(boolean Horarios) {
+        Ventana.Horarios = Horarios;
+    }
 
     public static boolean isRutas() {
         return Rutas;

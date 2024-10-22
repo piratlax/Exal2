@@ -1,4 +1,3 @@
-
 package com.summsoft.utilerias;
 
 import java.security.MessageDigest;
@@ -6,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Utilidades {
 
-public static String encryptPassword(String password) {
+    public static String encryptPassword(String password) {
         try {
             // Creación de la instancia del algoritmo SHA-256
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -27,5 +26,5 @@ public static String encryptPassword(String password) {
             return null;
         }
     }
-    
+
 }
