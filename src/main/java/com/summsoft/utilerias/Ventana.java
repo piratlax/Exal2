@@ -7,6 +7,15 @@ private static boolean TipoBus;
 private static boolean Terminal;
 private static boolean Rutas;
 private static boolean Horarios;
+private static boolean Seleccion;
+
+    public static boolean isSeleccion() {
+        return Seleccion;
+    }
+
+    public static void setSeleccion(boolean Seleccion) {
+        Ventana.Seleccion = Seleccion;
+    }
 
     public static boolean isHorarios() {
         return Horarios;

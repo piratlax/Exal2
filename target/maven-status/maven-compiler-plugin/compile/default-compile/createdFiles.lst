@@ -29,6 +29,7 @@ com\summsoft\interfases\DaoRutas.class
 com\summsoft\implementaciones\ImplTerminal.class
 com\summsoft\vistas\HorariosView$1.class
 com\summsoft\vistas\vistaPersonal$8.class
+com\summsoft\vistas\SeleccionViajeView$1.class
 com\summsoft\vistas\VistaTerminal$3.class
 com\summsoft\vistas\Principal$4.class
 com\summsoft\vistas\HorariosView$8.class
@@ -60,6 +61,7 @@ com\summsoft\interfases\DaoTerminales.class
 com\summsoft\implementaciones\HorarioImpl.class
 com\summsoft\modelos\MdlRutas.class
 com\summsoft\modelos\MdlUsuario.class
+com\summsoft\vistas\SeleccionViajeView.class
 com\summsoft\vistas\VistaTerminal$6.class
 com\summsoft\exal\Login$2.class
 com\summsoft\vistas\VistaRutas$7.class
@@ -67,6 +69,7 @@ com\summsoft\vistas\VistaAutobus$6.class
 com\summsoft\modelos\Bus.class
 com\summsoft\vistas\HorariosView$5.class
 com\summsoft\modelos\Conductor.class
+com\summsoft\vistas\Principal$7.class
 com\summsoft\vistas\VistaAutobus$2.class
 com\summsoft\implementaciones\ImplUsuario.class
 com\summsoft\vistas\vistaPersonal$5.class

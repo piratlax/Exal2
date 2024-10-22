@@ -54,6 +54,8 @@ public class Principal extends javax.swing.JFrame {
         mnuTerminal = new javax.swing.JMenuItem();
         mnuRutas = new javax.swing.JMenuItem();
         mnuHorario = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        mnuVenta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -183,6 +185,20 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventaTicketMnu.png"))); // NOI18N
+        jMenu4.setText("Boletos");
+
+        mnuVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boletoMnu.png"))); // NOI18N
+        mnuVenta.setText("Venta");
+        mnuVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuVentaActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuVenta);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -254,6 +270,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuHorarioActionPerformed
 
+    private void mnuVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuVentaActionPerformed
+       if (!Ventana.isSeleccion()){
+            SeleccionViajeView seleccion = new SeleccionViajeView();
+            Dashboard.add(seleccion);
+            seleccion.setLocation(100,1);
+            seleccion.setVisible(true);
+            Ventana.setSeleccion(true);
+        }
+    }//GEN-LAST:event_mnuVentaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -264,6 +290,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem mnuBusEstilo;
@@ -273,6 +300,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenu mnuSistema;
     private javax.swing.JMenuItem mnuTerminal;
+    private javax.swing.JMenuItem mnuVenta;
     private javax.swing.JPanel status;
     private javax.swing.JLabel txtFecha;
     private javax.swing.JLabel txtPersonalActivo;

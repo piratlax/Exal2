@@ -411,7 +411,7 @@ public class HorariosView extends javax.swing.JInternalFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         //cerramos
-        Ventana.setRutas(false);
+        Ventana.setHorarios(false);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
