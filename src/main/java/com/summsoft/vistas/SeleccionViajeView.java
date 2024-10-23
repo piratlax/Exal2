@@ -3,8 +3,13 @@ package com.summsoft.vistas;
 import com.summsoft.implementaciones.HorarioImpl;
 import com.summsoft.interfases.HorarioDao;
 import com.summsoft.modelos.Horario;
+import com.summsoft.utilerias.Boletos;
 import com.summsoft.utilerias.Ventana;
+import static com.summsoft.vistas.Principal.Dashboard;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class SeleccionViajeView extends javax.swing.JInternalFrame {
@@ -70,7 +75,7 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Viajes Programados"));
@@ -88,7 +93,12 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tabla);
 
-        jButton1.setText("SELECCIONAR");
+        btnSeleccionar.setText("SELECCIONAR");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("CANCELAR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +118,7 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnSalir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -118,7 +128,7 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSalir))))
@@ -150,10 +160,44 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+      int fila = tabla.getSelectedRow();
+
+        if (fila >= 0) {
+       
+            Boletos.setFolio(tabla.getValueAt(fila, 1).toString());
+            
+            Boletos.setRuta(tabla.getValueAt(fila, 2).toString());
+            
+            Boletos.setHora(tabla.getValueAt(fila, 3).toString());
+            
+            Boletos.setBus(tabla.getValueAt(fila, 4).toString());
+            
+            Boletos.setConductor(tabla.getValueAt(fila, 5).toString());
+            
+            VentaView venta;
+          try {
+            venta = new VentaView();
+            Dashboard.add(venta);
+            venta.setLocation(100,1);
+            venta.setVisible(true);
+            
+            Ventana.setSeleccion(false);
+            this.dispose();
+          } catch (Exception ex) {
+              System.out.println("error "+ex);
+          }
+            
+            
+            } else {
+            JOptionPane.showMessageDialog(null, "Selecciona un elemento de la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;

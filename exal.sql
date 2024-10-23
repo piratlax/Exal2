@@ -108,7 +108,7 @@ CREATE TABLE `folio` (
 
 LOCK TABLES `folio` WRITE;
 /*!40000 ALTER TABLE `folio` DISABLE KEYS */;
-INSERT INTO `folio` VALUES (1,2024,10,2);
+INSERT INTO `folio` VALUES (1,2024,10,4);
 /*!40000 ALTER TABLE `folio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,8 +126,10 @@ CREATE TABLE `horarios` (
   `conductores_id` int NOT NULL,
   `folio` varchar(10) NOT NULL,
   `hora` time NOT NULL,
+  `fecha` date DEFAULT NULL,
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `personal` int NOT NULL,
+  `activo` enum('SI','NO') NOT NULL DEFAULT 'SI',
   PRIMARY KEY (`id`),
   KEY `fk_horarios_rutas1_idx` (`rutas_id`),
   KEY `fk_horarios_conductores1_idx` (`conductores_id`),
@@ -135,7 +137,7 @@ CREATE TABLE `horarios` (
   CONSTRAINT `fk_horarios_autobuses1` FOREIGN KEY (`autobuses_id`) REFERENCES `autobuses` (`id`),
   CONSTRAINT `fk_horarios_conductores1` FOREIGN KEY (`conductores_id`) REFERENCES `conductores` (`id`),
   CONSTRAINT `fk_horarios_rutas1` FOREIGN KEY (`rutas_id`) REFERENCES `rutas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +146,7 @@ CREATE TABLE `horarios` (
 
 LOCK TABLES `horarios` WRITE;
 /*!40000 ALTER TABLE `horarios` DISABLE KEYS */;
-INSERT INTO `horarios` VALUES (1,1,1,22,'2410-1','14:30:00','2024-10-22 04:40:39',1),(2,4,12,34,'2410-2','16:30:00','2024-10-22 04:41:29',1);
+INSERT INTO `horarios` VALUES (1,1,1,22,'2410-1','14:30:00',NULL,'2024-10-22 04:40:39',1,'SI'),(2,4,12,34,'2410-2','16:30:00',NULL,'2024-10-22 04:41:29',1,'SI'),(3,1,15,35,'2410-3','15:00:00','2024-10-22','2024-10-22 20:37:08',1,'SI'),(4,12,4,29,'2410-4','22:00:00','2024-10-22','2024-10-23 04:03:12',1,'SI');
 /*!40000 ALTER TABLE `horarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,6 +179,41 @@ LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
 INSERT INTO `rutas` VALUES (1,1,12,'SI','SOL-CRI'),(2,10,2,'SI','XAN-CET'),(4,31,16,'SI','XAL-PUE'),(9,12,1,'SI','CRI-SOL'),(10,15,10,'SI','CTZ-XAN'),(12,16,31,'SI','PUE-XAL');
 /*!40000 ALTER TABLE `rutas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tarifas`
+--
+
+DROP TABLE IF EXISTS `tarifas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tarifas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idrutas` int DEFAULT NULL,
+  `origen` int DEFAULT NULL,
+  `destino` int DEFAULT NULL,
+  `tarifa` int DEFAULT NULL,
+  `insen` int DEFAULT NULL,
+  `estudiante` int DEFAULT NULL,
+  `nino` int DEFAULT NULL,
+  `nino_desc` int DEFAULT NULL,
+  `redondo` int DEFAULT NULL,
+  `redondo_desc` int DEFAULT NULL,
+  `pasillo` int NOT NULL DEFAULT '0',
+  `activa` enum('SI','NO') NOT NULL DEFAULT 'SI',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tarifas`
+--
+
+LOCK TABLES `tarifas` WRITE;
+/*!40000 ALTER TABLE `tarifas` DISABLE KEYS */;
+INSERT INTO `tarifas` VALUES (16,1,1,13,500,0,0,0,0,950,0,0,'SI'),(17,1,1,12,550,0,0,0,0,1050,0,0,'SI'),(18,1,16,13,500,0,0,0,0,950,0,0,'SI'),(19,1,16,12,550,0,0,0,0,1050,0,0,'SI'),(20,9,12,1,650,0,0,0,0,1150,0,0,'SI'),(21,9,12,16,550,0,0,0,0,1050,0,0,'SI'),(22,9,13,1,600,0,0,0,0,1100,0,0,'SI'),(23,9,13,16,500,0,0,0,0,950,0,0,'SI'),(28,2,31,15,260,170,170,170,340,440,340,0,'SI'),(29,2,30,15,260,170,0,170,0,440,340,0,'SI'),(37,12,16,20,150,90,90,90,180,280,180,0,'SI'),(39,12,16,24,150,100,100,100,0,340,200,0,'SI'),(40,12,16,25,150,110,110,110,220,380,220,0,'SI'),(41,12,16,27,150,110,110,110,220,380,220,0,'SI'),(42,12,16,26,150,110,110,110,220,380,220,0,'SI'),(43,12,16,28,150,110,110,110,220,380,220,0,'SI'),(44,12,16,29,180,110,110,110,220,380,220,0,'SI'),(45,12,16,30,180,110,110,110,220,380,220,0,'SI'),(46,12,16,31,200,110,110,110,220,380,220,0,'SI'),(47,4,31,16,200,110,110,110,220,380,220,0,'SI'),(48,4,30,16,180,110,110,110,220,360,300,0,'SI'),(61,2,30,28,12,0,0,0,0,0,0,0,'SI'),(62,2,30,27,15,0,0,0,0,0,0,0,'SI'),(63,2,30,25,30,0,0,0,0,0,0,0,'SI'),(64,2,30,24,40,0,0,0,0,0,0,0,'SI'),(65,2,30,7,60,0,0,0,0,0,0,0,'SI'),(66,2,30,32,90,0,0,0,0,0,0,0,'SI'),(67,2,30,21,140,0,0,0,0,0,0,0,'SI'),(68,2,30,33,190,0,0,0,0,0,0,0,'SI'),(69,2,30,35,250,0,0,0,0,0,0,0,'SI'),(70,2,30,37,160,0,0,0,0,0,0,0,'SI'),(71,2,30,41,170,0,0,0,0,0,0,0,'SI');
+/*!40000 ALTER TABLE `tarifas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -262,7 +299,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Administrador','admin','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','Administrador','12345','SI',0);
+INSERT INTO `usuarios` VALUES (1,'Administrador','admin','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','Administrador','12345','SI',16);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -275,4 +312,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-21 22:44:03
+-- Dump completed on 2024-10-22 23:03:31

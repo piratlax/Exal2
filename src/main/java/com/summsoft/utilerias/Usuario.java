@@ -6,7 +6,16 @@ public class Usuario {
     public static String nombre;
     public static String usuario;
     public static String Perfil;
+    public static String terminal;
     public static int terminalId;
+
+    public static String getTerminal() {
+        return terminal;
+    }
+
+    public static void setTerminal(String terminal) {
+        Usuario.terminal = terminal;
+    }
 
     public static String getUsuario() {
         return usuario;
