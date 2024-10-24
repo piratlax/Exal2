@@ -1,11 +1,13 @@
 package com.summsoft.implementaciones;
 
 import com.summsoft.interfases.DaoTipoBus;
+import com.summsoft.modelos.Bus;
 import com.summsoft.modelos.MdlTipoBus;
 import com.summsoft.utilerias.Conexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImplTipoBus extends Conexion implements DaoTipoBus{
@@ -71,5 +73,31 @@ public boolean registrar(List lista) throws Exception {
             this.Cerrar();
         }
         return resultado;}
+
+    @Override
+    public List bus(String tipo) throws Exception {
+        List<MdlTipoBus> tipoBus=null;
+        try {
+           this.Conectar(); 
+           String query = "SELECT valor FROM tipos_bus WHERE tipo = (SELECT tipo FROM autobuses WHERE numero = '"+tipo+"')";
+           PreparedStatement st = this.conexion.prepareStatement(query);
+           tipoBus = new ArrayList<>();
+           ResultSet rs = st.executeQuery();
+           while(rs.next()) {
+              MdlTipoBus mdl = new MdlTipoBus();
+              mdl.setValor(rs.getString("valor"));
+              
+              
+              tipoBus.add(mdl);
+           }
+           rs.close();
+           st.close();
+        } catch (SQLException e) {
+            System.out.println("error " + e);
+        } finally {
+            this.Cerrar();
+        }
+        return tipoBus;
+    }
     
 }

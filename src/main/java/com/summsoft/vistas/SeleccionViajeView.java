@@ -182,7 +182,6 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
             venta.setLocation(100,1);
             venta.setVisible(true);
             
-            Ventana.setSeleccion(false);
             this.dispose();
           } catch (Exception ex) {
               System.out.println("error "+ex);
