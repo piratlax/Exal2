@@ -447,8 +447,11 @@ public class HorariosView extends javax.swing.JInternalFrame {
 
         if (Hora) {
             try {
-          
-                   if (dao.registrar(Ruta, Conductor, Bus, txtHora.getText())) {
+                String folio=dao.registrar(Ruta, Conductor, Bus, txtHora.getText());
+                   if (!folio.isEmpty()) {
+                        // generamos la plantilla del autobus
+                        dao.plantillaAutobus(folio, Bus);
+                        
                         JOptionPane.showMessageDialog(null, "Horario correctamente integrado", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "Faltan datos. Por favor, complete todos los campos requeridos.", "Advertencia", JOptionPane.WARNING_MESSAGE);

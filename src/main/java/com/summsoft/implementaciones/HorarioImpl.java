@@ -7,6 +7,7 @@ import com.summsoft.modelos.Horario;
 import com.summsoft.modelos.MdlRutas;
 import com.summsoft.utilerias.Conexion;
 import com.summsoft.utilerias.Usuario;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,8 +92,8 @@ public class HorarioImpl extends Conexion implements HorarioDao{
     }
 
     @Override
-    public boolean registrar(String ruta, String Conductor, String Bus, String hora) throws Exception {
-       boolean resultado=false;
+    public String registrar(String ruta, String Conductor, String Bus, String hora) throws Exception {
+       String resultado=null;
        
        int numero=0;
         try {
@@ -171,7 +172,7 @@ public class HorarioImpl extends Conexion implements HorarioDao{
             // Verificar el número de filas afectadas
             int filasAfectadas = st.executeUpdate();
             if (filasAfectadas > 0) {
-                resultado = true;
+                resultado = Folio;
             }
             st.close();
         } catch (SQLException e) {
@@ -232,4 +233,37 @@ public class HorarioImpl extends Conexion implements HorarioDao{
         }
         return lista;   
     }
+
+    @Override
+    public void plantillaAutobus(String folio, String Bus) throws Exception {
+    this.Conectar();
+    PreparedStatement ps = null;
+    PreparedStatement st = null;
+    ResultSet rs = null;
+
+    try {
+        ps = this.conexion.prepareStatement("SELECT valor FROM tipos_bus WHERE tipo = (SELECT tipo FROM autobuses WHERE numero = ?)");
+        ps.setString(1, Bus);
+        rs = ps.executeQuery();
+
+        st = this.conexion.prepareStatement("INSERT INTO plantilla (fecha, folio, valor, boleto) VALUES (CURDATE(), ?, ?, ?)");
+
+        while (rs.next()) {
+            st.setString(1, folio);
+            st.setString(2, rs.getString("valor"));
+            st.setString(3, rs.getString("valor"));
+            st.executeUpdate();
+        }
+    } catch (SQLException e) {
+        
+        e.printStackTrace(); // Registra detalles del error
+        System.out.println("Error: " + e.getMessage());
+    } finally {
+        if (rs != null) rs.close();
+        if (ps != null) ps.close();
+        if (st != null) st.close();
+        this.Cerrar();
+    }
+}
+
 }
