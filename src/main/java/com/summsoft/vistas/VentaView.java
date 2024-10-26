@@ -1,27 +1,38 @@
 package com.summsoft.vistas;
 
 import com.summsoft.implementaciones.ImplTipoBus;
-import com.summsoft.implementaciones.VentaImpl;
+import com.summsoft.implementaciones.TarifaImpl;
 import com.summsoft.interfases.DaoTipoBus;
-import com.summsoft.interfases.VentaDao;
-import com.summsoft.modelos.MdlTipoBus;
+import com.summsoft.interfases.TarifaDao;
+import com.summsoft.modelos.Plantilla;
+import com.summsoft.modelos.Tarifa;
 import com.summsoft.modelos.Venta;
 import com.summsoft.utilerias.Boletos;
-import com.summsoft.utilerias.CustomCellRenderer;
 import com.summsoft.utilerias.Usuario;
 import java.awt.Color;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class VentaView extends javax.swing.JInternalFrame {
 
-    private List<Venta> tarifas;
+    //obtenemos las tarifas
+    private List<Tarifa> tarifas;
     DefaultComboBoxModel modeloDestino;
     String tipo = "sencillo";
     String parametro = "nulo";
+    String Abrev = null;
+    String TipoBoleto = null;
+    int Costo;
+    int totalVenta;
+
+    //obtenemos los asientos
+    DaoTipoBus dao = new ImplTipoBus();
+    List<Plantilla> mdl = dao.bus(Boletos.getFolio());
+
+    private List<Venta> Ventas;
 
     public VentaView() throws Exception {
         modeloDestino = new DefaultComboBoxModel(new String[]{});
@@ -30,21 +41,20 @@ public class VentaView extends javax.swing.JInternalFrame {
         Tarifas();
         Destinos();
         inicio();
-
         mostrarBus();
+        txtAsiento.requestFocus();
+        this.getRootPane().setDefaultButton(btnIntegrar);
     }
 
     private void mostrarBus() throws Exception {
-        DaoTipoBus dao = new ImplTipoBus();
-        List<MdlTipoBus> mdl = dao.bus(Boletos.getBus());
-
         int cols = 5;
         DefaultTableModel model = (DefaultTableModel) tblAutobus.getModel();
+        model.setRowCount(0); // Limpia todas las filas existentes
         Object[] rowData = new Object[cols]; // Array para almacenar los 5 valores
         int colIndex = 0;
 
-        for (MdlTipoBus bus : mdl) {
-            rowData[colIndex] = bus.getValor(); // Agrega el valor al array
+        for (Plantilla bus : mdl) {
+            rowData[colIndex] = bus.getBoleto(); // Agrega el valor al array
             colIndex++;
 
             // Si el array está lleno, agregamos la fila y reseteamos el índice
@@ -63,30 +73,19 @@ public class VentaView extends javax.swing.JInternalFrame {
 // Ajusta la altura de las filas a 30 píxeles (puedes cambiar este valor)
         tblAutobus.setRowHeight(30);
 
-// Crea una instancia del renderer personalizado
-        CustomCellRenderer renderer = new CustomCellRenderer();
-
-// Asigna el renderer a todas las columnas de la tabla
-        for (int i = 0; i < tblAutobus.getColumnCount(); i++) {
-            tblAutobus.getColumnModel().getColumn(i).setCellRenderer(renderer);
-        }
-
     }
 
-    
-    
     private void Tarifas() throws Exception {
-        VentaDao dao = new VentaImpl();
+        TarifaDao dao = new TarifaImpl();
         tarifas = dao.tarifas(Boletos.getRuta());
     }
 
     private void Destinos() {
         try {
+            TarifaDao dao = new TarifaImpl();
+            List<Tarifa> destinos = dao.destinos(Boletos.getRuta());
 
-            VentaDao dao = new VentaImpl();
-            List<Venta> destinos = dao.destinos(Boletos.getRuta());
-
-            for (Venta term : destinos) {
+            for (Tarifa term : destinos) {
 
                 modeloDestino.addElement(term.getDestino());
             }
@@ -99,7 +98,7 @@ public class VentaView extends javax.swing.JInternalFrame {
 
         txtOrigen.setText(Usuario.terminal);
         btnSencillo.doClick();
-
+        txtFolio.setEnabled(false);
     }
 
     /**
@@ -120,7 +119,6 @@ public class VentaView extends javax.swing.JInternalFrame {
         jcDestino = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtAsiento = new javax.swing.JTextField();
-        lblDatosBoleto = new javax.swing.JLabel();
         btnSencillo = new javax.swing.JButton();
         btnInsen = new javax.swing.JButton();
         btnNino = new javax.swing.JButton();
@@ -132,12 +130,16 @@ public class VentaView extends javax.swing.JInternalFrame {
         txtExcedente = new javax.swing.JTextField();
         lblPrecio = new javax.swing.JLabel();
         btnExcedente = new javax.swing.JButton();
-        btnVender = new javax.swing.JButton();
+        btnOrganizar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtFolio = new javax.swing.JTextField();
         lblTipo = new javax.swing.JLabel();
         lblParametro = new javax.swing.JLabel();
+        btnIntegrar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblVenta = new javax.swing.JTable();
+        lblTotal = new javax.swing.JLabel();
 
         setTitle("Venta de Boletos EXAL");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/boletoMnu.png"))); // NOI18N
@@ -168,7 +170,7 @@ public class VentaView extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del boleto"));
@@ -177,11 +179,14 @@ public class VentaView extends javax.swing.JInternalFrame {
         jLabel1.setText("Origen");
 
         jcDestino.setModel(modeloDestino);
+        jcDestino.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jcDestinoFocusLost(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Destino");
-
-        lblDatosBoleto.setText("_");
 
         btnSencillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/1.png"))); // NOI18N
         btnSencillo.setMnemonic('1');
@@ -270,10 +275,11 @@ public class VentaView extends javax.swing.JInternalFrame {
             }
         });
 
-        btnVender.setText("Asiento");
-        btnVender.addActionListener(new java.awt.event.ActionListener() {
+        btnOrganizar.setMnemonic('a');
+        btnOrganizar.setText("Asiento");
+        btnOrganizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVenderActionPerformed(evt);
+                btnOrganizarActionPerformed(evt);
             }
         });
 
@@ -281,13 +287,18 @@ public class VentaView extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Folio:");
 
-        txtFolio.setEditable(false);
-
         lblTipo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTipo.setText("_");
 
         lblParametro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblParametro.setText("_");
+
+        btnIntegrar.setText("Integrar");
+        btnIntegrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIntegrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -296,11 +307,11 @@ public class VentaView extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDatosBoleto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addComponent(btnIntegrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnVender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnOrganizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -343,8 +354,8 @@ public class VentaView extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(btnEducativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnPase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())))
+                                        .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,7 +384,7 @@ public class VentaView extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnVender))
+                                .addComponent(btnOrganizar))
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -383,30 +394,54 @@ public class VentaView extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtExcedente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnExcedente)
-                            .addComponent(lblPrecio))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(lblDatosBoleto)
-                        .addGap(32, 32, 32))
+                            .addComponent(lblPrecio)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnEducativo)
                         .addGap(18, 18, 18)
                         .addComponent(btnPase)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIntegrar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Total"));
+
+        tblVenta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Folio", "Destino", "Boleto", "Tipo", "Costo", "Exc.", "Total"
+            }
+        ));
+        jScrollPane2.setViewportView(tblVenta);
+
+        lblTotal.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTotal.setText("_");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblTotal)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -426,7 +461,7 @@ public class VentaView extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -434,52 +469,81 @@ public class VentaView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+    private void btnOrganizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrganizarActionPerformed
 
         String origen = txtOrigen.getText();
         String destino = jcDestino.getSelectedItem().toString();
 
-        for (Venta tarifa : tarifas) {
+        for (Tarifa tarifa : tarifas) {
             if (tarifa.getOrigen().equalsIgnoreCase(origen) && tarifa.getDestino().equalsIgnoreCase(destino)) {
+                Abrev = tarifa.getAbrev();
                 if (tipo.equals("sencillo")) {
                     lblPrecio.setText("$ " + tarifa.getSencillo());
+                    Costo=tarifa.getSencillo();
+                    TipoBoleto = "Sencillo";
                 }
                 if (tipo.equals("nino")) {
                     lblPrecio.setText("$ " + tarifa.getNino());
+                    TipoBoleto = "Niño";
+                    Costo=tarifa.getNino();
                 }
                 if (tipo.equals("insen")) {
                     lblPrecio.setText("$ " + tarifa.getInsen());
+                    TipoBoleto = "INSEN";
+                    Costo=tarifa.getInsen();
                 }
                 if (tipo.equals("estudiante")) {
                     lblPrecio.setText("$ " + tarifa.getEstudiante());
+                    TipoBoleto = "Estudiante";
+                    Costo=tarifa.getEstudiante();
                 }
                 if (tipo.equals("redondo")) {
                     lblPrecio.setText("$ " + tarifa.getRedondo());
+                    TipoBoleto = "Redondo";
+                    Costo=tarifa.getRedondo();
                 }
                 if ((tipo.equals("redondo") && (lblParametro.getText().equals("Descuento")))) {
                     lblPrecio.setText("$ " + tarifa.getRedondo_desc());
+                    TipoBoleto = "Red. Desc.";
+                    Costo=tarifa.getRedondo_desc();
                 }
                 if ((tipo.equals("nino") && (lblParametro.getText().equals("Descuento")))) {
                     lblPrecio.setText("$ " + tarifa.getNino_desc());
+                    TipoBoleto = "Niño Desc.";
+                    Costo=tarifa.getNino_desc();
                 }
                 if (lblParametro.getText().equals("Pase")) {
                     lblPrecio.setText("$ 0.00");
+                    TipoBoleto = "Pase";
+                    Costo=0;
+                }
+                if (tipo.equals("pasillo")) {
+                    lblPrecio.setText("$ " + tarifa.getPasillo());
+                    TipoBoleto = "Pasillo";
+                    Costo=tarifa.getPasillo();
+                }
+                if (tipo.equals("regreso")) {
+                    lblPrecio.setText("$ 0.0");
+                    TipoBoleto = "Regreso";
+                    Costo=0;
                 }
             }
         }
-
-    }//GEN-LAST:event_btnVenderActionPerformed
+        txtAsiento.requestFocus();
+    }//GEN-LAST:event_btnOrganizarActionPerformed
 
     private void btnInsenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsenActionPerformed
         tipo = "insen";
-        btnVender.doClick();
+        btnOrganizar.doClick();
         lblTipo.setText("INSEN");
     }//GEN-LAST:event_btnInsenActionPerformed
 
     private void btnNinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNinoActionPerformed
         tipo = "nino";
-        btnVender.doClick();
+        btnOrganizar.doClick();
         lblTipo.setText("Niño");
+        lblParametro.setText("_");
+        parametro="nulo";
     }//GEN-LAST:event_btnNinoActionPerformed
 
     private void btnSencilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSencilloActionPerformed
@@ -490,24 +554,26 @@ public class VentaView extends javax.swing.JInternalFrame {
         txtFolio.setEnabled(false);
         txtFolio.setText("");
         txtExcedente.setText("0");
-        btnVender.doClick();
+        btnOrganizar.doClick();
     }//GEN-LAST:event_btnSencilloActionPerformed
 
     private void btnEducativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEducativoActionPerformed
         tipo = "estudiante";
-        btnVender.doClick();
+        btnOrganizar.doClick();
         lblTipo.setText("Educativo");
     }//GEN-LAST:event_btnEducativoActionPerformed
 
     private void btnRedondoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedondoActionPerformed
         tipo = "redondo";
-        btnVender.doClick();
+        parametro="nulo";
+        btnOrganizar.doClick();
         lblTipo.setText("Redondo");
+        lblParametro.setText("_");
     }//GEN-LAST:event_btnRedondoActionPerformed
 
     private void btnRegresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresoActionPerformed
         tipo = "regreso";
-        btnVender.doClick();
+        btnOrganizar.doClick();
         lblTipo.setText("Regreso");
         txtFolio.setEnabled(true);
         txtFolio.requestFocus();
@@ -516,18 +582,79 @@ public class VentaView extends javax.swing.JInternalFrame {
     private void btnDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescuentoActionPerformed
         parametro = "descuento";
         lblParametro.setText("Descuento");
-        btnVender.doClick();
+        btnOrganizar.doClick();
     }//GEN-LAST:event_btnDescuentoActionPerformed
 
     private void btnPaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaseActionPerformed
         parametro = "pase";
         lblParametro.setText("Pase");
-        btnVender.doClick();
+        btnOrganizar.doClick();
     }//GEN-LAST:event_btnPaseActionPerformed
 
     private void btnExcedenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcedenteActionPerformed
         txtExcedente.requestFocus();
     }//GEN-LAST:event_btnExcedenteActionPerformed
+
+    private void btnIntegrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIntegrarActionPerformed
+        String asiento = txtAsiento.getText();
+        if (asiento.equals("")) {
+            txtAsiento.requestFocus();
+        } else {
+            boolean disponible = false;
+            // Buscar y reemplazar un valor basado en el campo `valor`
+            String nuevoAsiento = Abrev; // Nuevo asiento a asignar
+
+            for (Plantilla bus : mdl) {
+                if (bus.getBoleto().equals(asiento)) {
+                    disponible = true;
+                    bus.setBoleto(nuevoAsiento);  // Reemplazar asiento
+                    break;  // Salir del bucle si solo deseas actualizar el primero que coincida
+                }
+            }
+
+            if (disponible) {
+                String folio = Boletos.getFolio();
+                if(tipo.equals("regreso")) folio=txtFolio.getText();
+                String boleto = Usuario.getAbrev() + txtAsiento.getText();
+                String precio = lblPrecio.getText();
+                String exc = txtExcedente.getText();
+
+                try {
+                    int Excedente = exc.isEmpty() ? 0 : Integer.parseInt(exc);   // Verifica si `exc` está vacío
+                    String total = String.valueOf(Costo + Excedente);
+
+                    DefaultTableModel tmVenta = (DefaultTableModel) tblVenta.getModel();
+                    tmVenta.addRow(new Object[]{
+                        folio, Abrev, boleto, TipoBoleto, precio, exc, total
+                    });
+                    totalVenta+=Integer.valueOf(total);
+                    lblTotal.setText("Venta Total $"+totalVenta);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Error de formato numérico: " + e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Otro error: " + e.getMessage());
+                }
+
+                try {
+                    mostrarBus();
+                } catch (Exception ex) {
+                    System.out.println("error " + ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecciona una opcion valida", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            txtAsiento.setText("");
+            txtExcedente.setText("0");
+            txtAsiento.requestFocus();
+            txtFolio.setText("");
+            txtFolio.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnIntegrarActionPerformed
+
+    private void jcDestinoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcDestinoFocusLost
+       btnSencillo.doClick();
+    }//GEN-LAST:event_jcDestinoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -535,12 +662,13 @@ public class VentaView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEducativo;
     private javax.swing.JButton btnExcedente;
     private javax.swing.JButton btnInsen;
+    private javax.swing.JButton btnIntegrar;
     private javax.swing.JButton btnNino;
+    private javax.swing.JButton btnOrganizar;
     private javax.swing.JButton btnPase;
     private javax.swing.JButton btnRedondo;
     private javax.swing.JButton btnRegreso;
     private javax.swing.JButton btnSencillo;
-    private javax.swing.JButton btnVender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -548,12 +676,14 @@ public class VentaView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> jcDestino;
-    private javax.swing.JLabel lblDatosBoleto;
     private javax.swing.JLabel lblParametro;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblTipo;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tblAutobus;
+    private javax.swing.JTable tblVenta;
     private javax.swing.JTextField txtAsiento;
     private javax.swing.JTextField txtExcedente;
     private javax.swing.JTextField txtFolio;

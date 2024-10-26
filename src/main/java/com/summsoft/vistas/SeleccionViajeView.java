@@ -175,16 +175,16 @@ public class SeleccionViajeView extends javax.swing.JInternalFrame {
             
             Boletos.setConductor(tabla.getValueAt(fila, 5).toString());
             
-            VentaView venta;
+            
           try {
-            venta = new VentaView();
+            VentaView venta = new VentaView();
             Dashboard.add(venta);
             venta.setLocation(100,1);
             venta.setVisible(true);
             
             this.dispose();
           } catch (Exception ex) {
-              System.out.println("error "+ex);
+              System.out.println("error aqui"+ex);
           }
             
             

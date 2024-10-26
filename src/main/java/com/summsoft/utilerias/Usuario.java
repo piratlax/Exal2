@@ -7,7 +7,16 @@ public class Usuario {
     public static String usuario;
     public static String Perfil;
     public static String terminal;
+    public static String abrev;
     public static int terminalId;
+
+    public static String getAbrev() {
+        return abrev;
+    }
+
+    public static void setAbrev(String abrev) {
+        Usuario.abrev = abrev;
+    }
 
     public static String getTerminal() {
         return terminal;

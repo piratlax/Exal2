@@ -22,7 +22,7 @@ public class ImplUsuario extends Conexion implements DaoUsuario {
        boolean acceso=false;
         this.Conectar();
         try {
-            PreparedStatement st = this.conexion.prepareStatement("SELECT u.id, u.nombre, u.usuario, u.perfil, u.terminales_id, t.terminal "
+            PreparedStatement st = this.conexion.prepareStatement("SELECT u.id, u.nombre, u.usuario, u.perfil, u.terminales_id, t.terminal, t.abrev "
                     + "FROM usuarios as u INNER JOIN terminales as t ON u.terminales_id = t.id WHERE usuario=? AND clave=? AND activo='SI'");
             st.setString(1,user);
             st.setString(2,password);
@@ -34,6 +34,7 @@ public class ImplUsuario extends Conexion implements DaoUsuario {
                 Usuario.setPerfil(rs.getString("perfil"));
                 Usuario.setTerminalId(rs.getInt("terminales_id"));
                 Usuario.setTerminal(rs.getString("terminal"));
+                Usuario.setAbrev(rs.getString("abrev"));
                 Usuario.setId(rs.getInt("id"));
                 
             }

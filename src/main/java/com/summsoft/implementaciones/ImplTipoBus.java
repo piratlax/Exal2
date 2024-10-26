@@ -1,8 +1,8 @@
 package com.summsoft.implementaciones;
 
 import com.summsoft.interfases.DaoTipoBus;
-import com.summsoft.modelos.Bus;
 import com.summsoft.modelos.MdlTipoBus;
+import com.summsoft.modelos.Plantilla;
 import com.summsoft.utilerias.Conexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,17 +75,18 @@ public boolean registrar(List lista) throws Exception {
         return resultado;}
 
     @Override
-    public List bus(String tipo) throws Exception {
-        List<MdlTipoBus> tipoBus=null;
+    public List bus(String folio) throws Exception {
+        List<Plantilla> tipoBus=null;
         try {
            this.Conectar(); 
-           String query = "SELECT valor FROM tipos_bus WHERE tipo = (SELECT tipo FROM autobuses WHERE numero = '"+tipo+"')";
+           String query = "SELECT valor, boleto FROM plantilla WHERE folio= '"+folio+"'";
            PreparedStatement st = this.conexion.prepareStatement(query);
            tipoBus = new ArrayList<>();
            ResultSet rs = st.executeQuery();
            while(rs.next()) {
-              MdlTipoBus mdl = new MdlTipoBus();
+              Plantilla mdl = new Plantilla();
               mdl.setValor(rs.getString("valor"));
+              mdl.setBoleto(rs.getString("boleto"));
               
               
               tipoBus.add(mdl);
